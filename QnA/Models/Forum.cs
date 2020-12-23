@@ -14,7 +14,8 @@ namespace QnA.Models
         public int Upvote { get; set; }
         public int Downvote { get; set; }
 
-        public int UserId { get; set; }
         public User User { get; set; }
+        public int UserId { get; set; }
+
     }
 }

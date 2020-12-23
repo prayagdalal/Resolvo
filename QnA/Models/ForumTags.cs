@@ -9,11 +9,12 @@ namespace QnA.Models
     {
         public int Id { get; set; }
 
-        public int ForumId { get; set; }
         public Forum Forum { get; set; }
+        public int ForumId { get; set; }
 
-        public Tag TagId { get; set; }
         public Tag Tag { get; set; }
+        public int TagId { get; set; }
+
 
     }
 }

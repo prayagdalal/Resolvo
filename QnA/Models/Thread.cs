@@ -16,10 +16,10 @@ namespace QnA.Models
         public int Downvote { get; set; }
         public int IsAccepted { get; set; }
 
-        public int ForumId { get; set; }
         public Forum Forum { get; set; }
+        public int ForumId { get; set; }
 
-        public int UserId { get; set; }
         public User User { get; set; }
+        public int UserId { get; set; }
     }
 }
