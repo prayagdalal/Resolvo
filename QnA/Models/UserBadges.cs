@@ -13,7 +13,9 @@ namespace QnA.Models
         public User User { get; set; }
         public int UserId { get; set; }
 
-        public Tag Tag { get; set; }
-        public int TagId { get; set; }
+        public Badge Badge { get; set; }
+        public int BadgeId { get; set; }
+
+        public int ObtainScore { get; set; }
     }
 }

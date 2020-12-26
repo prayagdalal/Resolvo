@@ -1,0 +1,62 @@
+﻿@model QnA.ViewModels.TagViewModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/AdminMaster.cshtml";
+}
+
+<div class="page-title">
+    <div class="title_left">
+        <h3>Tags</h3>
+    </div>
+
+    <div class="title_right">
+        <div class="col-md-5 col-sm-5 form-group pull-right top_search">
+
+            <a href="@Url.Action("Add","Tags")" class="btn btn-primary" style="float:right">
+                + Add
+            </a>
+@*            <button type="button" class="btn btn-primary" style="float:right">+ Add</button>
+*@        </div>
+    </div>
+</div>
+
+@foreach (var data in Model.taglist)
+{
+<div class="animated flipInY col-lg-3 col-md-3 col-sm-6  ">
+    <div class="card text-dark bg-light mb-3">
+        <div class="card-header">
+            @data.Name
+            <span style="right:1em;float:right;margin: 0px 0px 0px 5px;">
+
+                <a href="@Url.Action("Delete","Tags",new { id=data.Id })">
+                    <i class='fa fa-trash'>
+                    </i>
+                </a>
+                
+
+            </span>
+            <span style="right:1em;float:right;margin: 0px 5px 0px 5px;
+">
+                <a href="@Url.Action("Edit","Tags",new { id = data.Id })">
+                    <i class="fa fa-pencil">
+                    </i>
+                </a>
+              @*  <i class="fa fa-pencil">
+                    @Html.ActionLink("", "Edit", "Tags", new { id = data.Id }, null)
+                </i>*@
+            </span>
+
+        </div>
+        <div class="card-body">
+            <p class="card-text">@data.Description</p>
+        </div>
+        <div class="card-footer">
+            <small class="text-muted">12345 Questions</small>
+        </div>
+    </div>
+</div>
+}
+
+
+
+
