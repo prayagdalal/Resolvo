@@ -11,12 +11,15 @@ namespace QnA.Models
         public String Name { get; set; }
         public String Image { get; set; }
         public String CompanyName { get; set; }
-        public DateTime CompanyFrom { get; set; }
-        public DateTime ComapnyTo { get; set; }
+        public DateTime? CompanyFrom { get; set; }
+        public DateTime? ComapnyTo { get; set; }
         public String Education { get; set; }
-        public DateTime EducationFrom { get; set; }
-        public DateTime EducationtTo { get; set; }
+        public DateTime? EducationFrom { get; set; }
+        public DateTime? EducationtTo { get; set; }
         public String Github { get; set; }
         public String Website { get; set; }
+        public String Email { get; set; }
+        public String Password { get; set; }
+        public String Type { get; set; }
     }
 }

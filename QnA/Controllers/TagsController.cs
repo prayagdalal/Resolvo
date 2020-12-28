@@ -32,7 +32,8 @@ namespace QnA.Controllers
         {
             var viewModel = new TagViewModel
             {
-                tag = new Tag()
+                tag = new Tag(),
+                type = "Add"
             };
             return View(viewModel);
         }
@@ -64,7 +65,8 @@ namespace QnA.Controllers
             }
 
             var viewModel = new TagViewModel { 
-                tag=tag 
+                tag=tag,
+                type="Edit"
             };
 
             return View("Add", viewModel);

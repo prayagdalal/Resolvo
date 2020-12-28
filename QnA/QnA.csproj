@@ -151,6 +151,26 @@
     <Compile Include="Migrations\202012251420406_add col in userBadges.designer.cs">
       <DependentUpon>202012251420406_add col in userBadges.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202012272023539_addFiledinUSer.cs" />
+    <Compile Include="Migrations\202012272023539_addFiledinUSer.designer.cs">
+      <DependentUpon>202012272023539_addFiledinUSer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202012272027541_addFiledinUSer1.cs" />
+    <Compile Include="Migrations\202012272027541_addFiledinUSer1.designer.cs">
+      <DependentUpon>202012272027541_addFiledinUSer1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202012272030049_addFiledinUserTbl.cs" />
+    <Compile Include="Migrations\202012272030049_addFiledinUserTbl.designer.cs">
+      <DependentUpon>202012272030049_addFiledinUserTbl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202012272033566_addFiledinUserNdBadgesTbls.cs" />
+    <Compile Include="Migrations\202012272033566_addFiledinUserNdBadgesTbls.designer.cs">
+      <DependentUpon>202012272033566_addFiledinUserNdBadgesTbls.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202012272043550_addnullableinUser.cs" />
+    <Compile Include="Migrations\202012272043550_addnullableinUser.designer.cs">
+      <DependentUpon>202012272043550_addnullableinUser.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Badge.cs" />
     <Compile Include="Models\Forum.cs" />
@@ -164,6 +184,7 @@
     <Compile Include="Models\UserTags.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\TagViewModel.cs" />
+    <Compile Include="ViewModels\UserViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />
@@ -4936,10 +4957,11 @@
     <Content Include="Views\Shared\ClientMaster.cshtml" />
     <Content Include="Views\Tags\Index.cshtml" />
     <Content Include="Views\Tags\Add.cshtml" />
+    <Content Include="Views\User\Admin\Index.cshtml" />
+    <Content Include="Views\User\Admin\Add.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\User\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
@@ -4966,6 +4988,21 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202012251420406_add col in userBadges.resx">
       <DependentUpon>202012251420406_add col in userBadges.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202012272023539_addFiledinUSer.resx">
+      <DependentUpon>202012272023539_addFiledinUSer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202012272027541_addFiledinUSer1.resx">
+      <DependentUpon>202012272027541_addFiledinUSer1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202012272030049_addFiledinUserTbl.resx">
+      <DependentUpon>202012272030049_addFiledinUserTbl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202012272033566_addFiledinUserNdBadgesTbls.resx">
+      <DependentUpon>202012272033566_addFiledinUserNdBadgesTbls.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202012272043550_addnullableinUser.resx">
+      <DependentUpon>202012272043550_addnullableinUser.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

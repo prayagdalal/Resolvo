@@ -11,6 +11,6 @@ namespace QnA.Models
         public String Title { get; set; }
         public String Description { get; set; }
         public int Score { get; set; }
-        public char BadgeType { get; set; }
+        public String BadgeType { get; set; }
     }
 }
