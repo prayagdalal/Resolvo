@@ -16,7 +16,7 @@ namespace QnA.Controllers
         {
             _context = new QnAContext();
         }
-        // GET: User
+        //forUser
         public ActionResult Index()
         {
             var users = _context.User.ToList();
@@ -24,7 +24,18 @@ namespace QnA.Controllers
             {
                 userList = users 
             };
-            return View("Admin/Index",viewModel);
+            return View("User/Index",viewModel);
+        }
+
+        //for admin
+        public ActionResult All()
+        {
+            var users = _context.User.ToList();
+            var viewModel = new UserViewModel
+            {
+                userList = users
+            };
+            return View("Admin/Index", viewModel);
         }
 
         public ActionResult Add()

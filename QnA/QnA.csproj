@@ -4955,10 +4955,12 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\AdminMaster.cshtml" />
     <Content Include="Views\Shared\ClientMaster.cshtml" />
-    <Content Include="Views\Tags\Index.cshtml" />
-    <Content Include="Views\Tags\Add.cshtml" />
+    <Content Include="Views\Tags\Admin\Index.cshtml" />
+    <Content Include="Views\Tags\Admin\Add.cshtml" />
     <Content Include="Views\User\Admin\Index.cshtml" />
     <Content Include="Views\User\Admin\Add.cshtml" />
+    <Content Include="Views\Tags\User\Index.cshtml" />
+    <Content Include="Views\User\User\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

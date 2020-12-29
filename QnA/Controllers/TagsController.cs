@@ -17,6 +17,8 @@ namespace QnA.Controllers
         {
             _context = new QnAContext();
         }
+            
+        //for user
         public ActionResult Index()
         {
             var Tags = _context.Tag.ToList();
@@ -25,7 +27,19 @@ namespace QnA.Controllers
             {
                 taglist = Tags
             };
-            return View(viewModel);
+            return View("User/Index",viewModel);
+        }
+
+        //for admin
+        public ActionResult All()
+        {
+            var Tags = _context.Tag.ToList();
+
+            var viewModel = new TagViewModel
+            {
+                taglist = Tags
+            };
+            return View("Admin/Index", viewModel);
         }
 
         public ActionResult Add()
@@ -35,7 +49,7 @@ namespace QnA.Controllers
                 tag = new Tag(),
                 type = "Add"
             };
-            return View(viewModel);
+            return View("Admin/Add",viewModel);
         }
 
         public ActionResult Save(Tag tag)
@@ -69,7 +83,7 @@ namespace QnA.Controllers
                 type="Edit"
             };
 
-            return View("Add", viewModel);
+            return View("Admin/Add", viewModel);
 
         }
 
