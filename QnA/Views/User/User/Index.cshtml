@@ -1,7 +1,7 @@
 ﻿@model QnA.ViewModels.UserViewModel
 @{
     ViewBag.Title = "Index";
-    Layout = "~/Views/Shared/AdminMaster.cshtml";
+    Layout = "~/Views/Shared/ClientMaster.cshtml";
 }
 <style>
     .profile_details .profile_view .left {
@@ -26,13 +26,13 @@
                     <h2>@data.Name</h2>
                     <p><strong>25000</strong></p>
                     <p>
-                        <span>50</span>
-                        <span>100</span>
-                        <span>500</span>
+                        <span><i class="fa fa-trophy" style="color:#FDBE01"></i>50</span>
+                        <span><i class="fa fa-trophy" style="color:#C7C7C7"></i>100</span>
+                        <span><i class="fa fa-trophy" style="color:#CF7A51"></i>500</span>
                     </p>
                 </div>
                 <div class="right col-sm-4 text-center">
-                    <img src="https://lh3.googleusercontent.com/proxy/FwHECvyo8HU-COUou_rG1mEdhblJlJdPFEVQsafjR2ST_1_1-Tjjaad9i9fbspHLKtDd0Y5E3xwcTgQxlqx5tJyZfaIv98cvC3z0Dvi6xW_kHX6GlAbwWQ" alt="" width="100" class="img-circle img-fluid">
+                    <img src="~/Content/images/user.png" alt="" width="100" class="img-circle img-fluid">
                 </div>
             </div>
         </div>
