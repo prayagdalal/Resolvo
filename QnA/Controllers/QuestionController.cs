@@ -25,5 +25,11 @@ namespace QnA.Controllers
             };
             return View(viewModel);
         }
+
+        public ActionResult Thread()
+        {
+            return View();
+        }
+
     }
 }

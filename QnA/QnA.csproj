@@ -205,6 +205,8 @@
     <Content Include="Content\build\js\custom.js" />
     <Content Include="Content\build\js\custom.min.js" />
     <Content Include="Content\css\maps\jquery-jvectormap-2.0.3.css" />
+    <Content Include="Content\css\questionlist\custom.css" />
+    <Content Include="Content\css\questionlist\main.css" />
     <Content Include="Content\css\tagsinput\bootstrap-tagsinput.css" />
     <Content Include="Content\images\american-express.png" />
     <Content Include="Content\images\cropper.jpg" />
@@ -4967,6 +4969,7 @@
     <Content Include="Views\User\User\Index.cshtml" />
     <Content Include="Views\Question\Index.cshtml" />
     <Content Include="Views\Question\Add.cshtml" />
+    <Content Include="Views\Question\Thread.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
