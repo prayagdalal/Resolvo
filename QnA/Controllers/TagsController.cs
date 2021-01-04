@@ -66,7 +66,7 @@ namespace QnA.Controllers
                 getTag.Description = tag.Description;
             }
             _context.SaveChanges();
-            return RedirectToAction("Index", "Tags");
+            return RedirectToAction("All", "Tags");
         }
 
         public ActionResult Edit(int id)
@@ -98,7 +98,7 @@ namespace QnA.Controllers
 
             _context.Tag.Remove(tag);
             _context.SaveChanges();
-            return RedirectToAction("Index", "Tags");
+            return RedirectToAction("All", "Tags");
 
         }
     }

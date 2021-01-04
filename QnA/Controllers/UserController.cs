@@ -108,5 +108,26 @@ namespace QnA.Controllers
         {
             return Content("workin");
         }
+
+        public ActionResult Login()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public JsonResult Login(string username, string password)
+        {
+            var res = _context.User.SingleOrDefault(u => u.Name == username && u.Password == password);
+            if (res != null)
+            {
+                return Json(res);
+            }
+            else
+            {
+                return Json("invalid user name or password");
+            }
+
+
+        }
     }
 }

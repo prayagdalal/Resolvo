@@ -1,0 +1,116 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Login</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--===============================================================================================-->
+    <link rel="icon" type="image/png" href="~/Content/Login_v11/images/icons/favicon.ico" />
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/Content/Login_v11/vendor/bootstrap/css/bootstrap.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/Content/Login_v11/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/Content/Login_v11/fonts/Linearicons-Free-v1.0.0/icon-font.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/Content/Login_v11/vendor/animate/animate.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/Content/Login_v11/vendor/css-hamburgers/hamburgers.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/Content/Login_v11/vendor/select2/select2.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/Content/Login_v11/css/util.css">
+    <link rel="stylesheet" type="text/css" href="~/Content/Login_v11/css/main.css">
+    <!--===============================================================================================-->
+</head>
+
+<body>
+
+    <div class="limiter">
+        <div class="container-login100">
+            <div class="wrap-login100 p-l-50 p-r-50 p-t-77 p-b-30">
+                <form method="POST" class="login100-form validate-form">
+                    <span class="login100-form-title p-b-55">
+                        Login
+                    </span>
+                    <div class="alert alert-danger" id="dangerid" role="alert" style="display: none;">
+                    </div>
+
+                    <div class="wrap-input100 validate-input m-b-16" data-validate="Valid email is required: ex@abc.xyz">
+                        <input class="input100" type="text" name="username" id="uname" placeholder="User Mail">
+                        <span class="focus-input100"></span>
+                        <span class="symbol-input100">
+                            <span class="lnr lnr-envelope"></span>
+                        </span>
+                    </div>
+
+                    <div class="wrap-input100 validate-input m-b-16" data-validate="Password is required">
+                        <input class="input100" type="password" id="upass" name="pass" placeholder="Password">
+                        <span class="focus-input100"></span>
+                        <span class="symbol-input100">
+                            <span class="lnr lnr-lock"></span>
+                        </span>
+                    </div>
+
+                    <div class="container-login100-form-btn p-t-25">
+                        <button type="submit" onclick="fnvalid()" class="login100-form-btn">
+                            Login
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+		function fnvalid() {
+			event.preventDefault();
+			var obj = {
+				username: $('#uname').val(),
+				password: $('#upass').val()
+			}
+
+			$.ajax({
+                url: "/User/Login",
+				method: "POST",
+				data: JSON.stringify(obj),
+				contentType: "application/json",
+				cache: false,
+				success: function (res) {
+					if (res.Type == "Admin") {
+						window.location.href='@Url.Action("Index", "Dashboard")'
+					}
+					if (res.Type == "User") {
+						window.location.href='@Url.Action("Index", "Question")'
+					}
+					if (res == "invalid user name or password")
+						$('#dangerid').show().html(res);
+
+				},
+				error: function (err) {
+
+				}
+			});
+		}
+    </script>
+
+
+
+
+    <!--===============================================================================================-->
+    <script src="~/Content/Login_v11/vendor/jquery/jquery-3.2.1.min.js"></script>
+    <!--===============================================================================================-->
+    <script src="~/Content/Login_v11/vendor/bootstrap/js/popper.js"></script>
+    <script src="~/Content/Login_v11/vendor/bootstrap/js/bootstrap.min.js"></script>
+    <!--===============================================================================================-->
+    <script src="~/Content/Login_v11/vendor/select2/select2.min.js"></script>
+    <!--===============================================================================================-->
+    <script src="~/Content/Login_v11/js/main.js"></script>
+
+</body>
+
+</html>

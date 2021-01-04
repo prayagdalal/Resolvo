@@ -1,0 +1,80 @@
+﻿@model QnA.ViewModels.BadgeViewModel
+@{
+	ViewBag.Title = "Add";
+	Layout = "~/Views/Shared/AdminMaster.cshtml";
+}
+<style>
+	textarea {
+		width: 100%;
+		height: 200px;
+	}
+</style>
+<div class="page-title">
+	<div class="title_left">
+		<h3>Tags</h3>
+	</div>
+
+	<div class="title_right">
+		<div class="col-md-5 col-sm-5 form-group pull-right top_search">
+			<div class="input-group">
+				<input type="text" class="form-control" placeholder="Search for...">
+				<span class="input-group-btn">
+					<button class="btn btn-default" type="button">Go!</button>
+				</span>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="clearfix"></div>
+
+<div class="row">
+	<div class="col-md-12 col-sm-12">
+		<div class="x_panel">
+			<div class="x_content">
+				@using (Html.BeginForm("Save", "Badges"))
+				{
+					<span class="section">Add Tags</span>
+					<div class="field item form-group">
+						<label class="col-form-label col-md-3 col-sm-3  label-align">Title<span class="required">*</span></label>
+						<div class="col-md-6 col-sm-6">
+							@Html.TextBoxFor(m => m.badge.Title, new { @class = "form-control" })
+						</div>
+					</div>
+
+
+
+					<div class="field item form-group">
+						<label class="col-form-label col-md-3 col-sm-3  label-align">Description<span class="required">*</span></label>
+						<div class="col-md-6 col-sm-6">
+							@Html.TextAreaFor(m => m.badge.Description)
+
+						</div>
+					</div>
+					<div class="field item form-group">
+						<label class="col-form-label col-md-3 col-sm-3  label-align">Score<span class="required">*</span></label>
+						<div class="col-md-6 col-sm-6">
+							@Html.TextBoxFor(m => m.badge.Score, new { @class = "form-control" })
+						</div>
+					</div>
+
+					<div class="field item form-group">
+						<label class="col-form-label col-md-3 col-sm-3  label-align">BadgeType<span class="required">*</span></label>
+						<div class="col-md-6 col-sm-6">
+							@Html.TextBoxFor(m => m.badge.BadgeType, new { @class = "form-control" })
+						</div>
+					</div>
+
+					@Html.HiddenFor(m => m.badge.Id)
+					<div class="ln_solid">
+						<div class="form-group">
+							<div class="col-md-6 offset-md-3">
+								<button type='submit' class="btn btn-primary">Save</button>
+							</div>
+						</div>
+					</div>
+				}
+			</div>
+		</div>
+	</div>
+</div>
+

@@ -1,0 +1,41 @@
+﻿@model QnA.ViewModels.BadgeViewModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/AdminMaster.cshtml";
+}
+
+<div class="page-title">
+    <div class="title_left">
+        <h3>Badges</h3>
+    </div>
+
+</div>
+<div class="clearfix"></div>
+
+
+@foreach (var data in Model.badgelist)
+{
+    <div class="animated flipInY col-lg-3 col-md-3 col-sm-6  ">
+        <div class="card text-dark bg-light mb-3">
+            <div class="card-header">
+                @data.Title
+
+            </div>
+            <div class="card-body">
+                <h6>Description</h6><p class="card-text">@data.Description</p>
+                <h6>Score</h6><p class="card-text">@data.Score</p>
+                <h6>BadgeType</h6><p class="card-text">@data.BadgeType</p>
+
+
+
+            </div>
+            <div class="card-footer">
+                <small class="text-muted">12345 Questions</small>
+            </div>
+        </div>
+    </div>
+}
+
+
+
+
