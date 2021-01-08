@@ -54,7 +54,28 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.3\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Owin, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Owin.2.2.3\lib\net45\Microsoft.AspNet.Identity.Owin.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Owin, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.3.0.1\lib\net45\Microsoft.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.3.0.1\lib\net45\Microsoft.Owin.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Cookies, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.Cookies.3.0.1\lib\net45\Microsoft.Owin.Security.Cookies.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.OAuth, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.OAuth.3.0.1\lib\net45\Microsoft.Owin.Security.OAuth.dll</HintPath>
+    </Reference>
+    <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
+      <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -174,14 +195,40 @@
     <Compile Include="Migrations\202012272043550_addnullableinUser.designer.cs">
       <DependentUpon>202012272043550_addnullableinUser.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202101052216578_something.cs" />
+    <Compile Include="Migrations\202101052216578_something.designer.cs">
+      <DependentUpon>202101052216578_something.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202101062019443_addtwomodels.cs" />
+    <Compile Include="Migrations\202101062019443_addtwomodels.designer.cs">
+      <DependentUpon>202101062019443_addtwomodels.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202101070835000_somechanges.cs" />
+    <Compile Include="Migrations\202101070835000_somechanges.designer.cs">
+      <DependentUpon>202101070835000_somechanges.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202101072018257_changetypeinThread.cs" />
+    <Compile Include="Migrations\202101072018257_changetypeinThread.designer.cs">
+      <DependentUpon>202101072018257_changetypeinThread.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202101072024210_rmfiledinThread.cs" />
+    <Compile Include="Migrations\202101072024210_rmfiledinThread.designer.cs">
+      <DependentUpon>202101072024210_rmfiledinThread.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202101072027284_addfiledinFnT.cs" />
+    <Compile Include="Migrations\202101072027284_addfiledinFnT.designer.cs">
+      <DependentUpon>202101072027284_addfiledinFnT.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Badge.cs" />
     <Compile Include="Models\Forum.cs" />
     <Compile Include="Models\ForumTags.cs" />
+    <Compile Include="Models\ForumVotes.cs" />
     <Compile Include="Models\Points.cs" />
     <Compile Include="Models\QnAContext.cs" />
     <Compile Include="Models\Tag.cs" />
     <Compile Include="Models\Thread.cs" />
+    <Compile Include="Models\ThreadVotes.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Models\UserBadges.cs" />
     <Compile Include="Models\UserTags.cs" />
@@ -5109,6 +5156,7 @@
     <Content Include="Views\Badges\Admin\Add.cshtml" />
     <Content Include="Views\Badges\Admin\Index.cshtml" />
     <Content Include="Views\Badges\User\Index.cshtml" />
+    <Content Include="Views\Question\sample.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -5154,6 +5202,24 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202012272043550_addnullableinUser.resx">
       <DependentUpon>202012272043550_addnullableinUser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202101052216578_something.resx">
+      <DependentUpon>202101052216578_something.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202101062019443_addtwomodels.resx">
+      <DependentUpon>202101062019443_addtwomodels.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202101070835000_somechanges.resx">
+      <DependentUpon>202101070835000_somechanges.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202101072018257_changetypeinThread.resx">
+      <DependentUpon>202101072018257_changetypeinThread.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202101072024210_rmfiledinThread.resx">
+      <DependentUpon>202101072024210_rmfiledinThread.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202101072027284_addfiledinFnT.resx">
+      <DependentUpon>202101072027284_addfiledinFnT.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

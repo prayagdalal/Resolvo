@@ -17,6 +17,8 @@ namespace QnA.Models
         public DbSet<UserBadges> UserBadges { get; set; }
         public DbSet<UserTags> UserTags { get; set; }
         public DbSet<Points> Points { get; set; }
+        public DbSet<ForumVotes> ForumVotes { get; set; }
+        public DbSet<ThreadVotes> ThreadVotes { get; set; }
         public QnAContext()
         {
 

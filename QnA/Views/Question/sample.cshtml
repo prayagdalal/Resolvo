@@ -1,0 +1,34 @@
+﻿<button onclick="submit()">
+go    
+</button>
+<script>
+	function submit(){
+		event.preventDefault();
+		var obj = {
+
+			unid: new Array(1,2,3),
+			thread: {
+                ParentThreadId: 11,
+                Body: "wefwe",
+                ForumId: 111,
+                UserId: 222
+            }
+
+		}
+
+		$.ajax({
+			url: "/Question/test",
+			method: "POST",
+			data: JSON.stringify(obj),
+			contentType: "application/json",
+			cache: false,
+			success: function (res) {
+				console.log(res);
+			},
+			error: function (err) {
+
+			}
+		});
+	}
+</script>
+

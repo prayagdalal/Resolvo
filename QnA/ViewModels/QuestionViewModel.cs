@@ -10,5 +10,7 @@ namespace QnA.ViewModels
     {
         public Forum forum { get; set; }
         public String type { get; set; }
+        public List<Forum> forumList { get; set; }
+        public List<Thread> threadList { get; set; }
     }
 }
