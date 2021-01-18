@@ -4,9 +4,9 @@
     Layout = "~/Views/Shared/AdminMaster.cshtml";
 }
 <style>
-    textarea{
-        width:100%;
-        height:200px;
+    textarea {
+        width: 100%;
+        height: 200px;
     }
 </style>
 <div class="page-title">
@@ -33,31 +33,40 @@
             <div class="x_content">
                 @using (Html.BeginForm("Save", "Tags"))
                 {
-                <span class="section">@Model.type Tags</span>
-                <div class="field item form-group">
-                    <label class="col-form-label col-md-3 col-sm-3  label-align">Name<span class="required">*</span></label>
-                    <div class="col-md-6 col-sm-6">
-                            @Html.TextBoxFor(m => m.tag.Name, new { @class = "form-control" })
-                    </div>
-                </div>
 
-
-
-                <div class="field item form-group">
-                    <label class="col-form-label col-md-3 col-sm-3  label-align">Description<span class="required">*</span></label>
-                    <div class="col-md-6 col-sm-6">
-                        @Html.TextAreaFor(m => m.tag.Description)
-
-                    </div>
-                </div>
-                 @Html.HiddenFor(m=>m.tag.Id)
-                <div class="ln_solid">
-                    <div class="form-group">
-                        <div class="col-md-6 offset-md-3">
-                            <button type='submit' class="btn btn-primary">Save</button>
+                    <span class="section">@Model.type Tags</span>
+                    <div class="field item form-group">
+                        <label class="col-form-label col-md-3 col-sm-3  label-align">Name<span class="required">*</span></label>
+                        <div class="col-md-6 col-sm-6">
+                            <h3>
+                                <b>
+                                    @Html.TextBoxFor(m => m.tag.Name, new { @class = "form-control" })
+                                </b>
+                            </h3>
                         </div>
                     </div>
-                </div>
+
+
+
+                    <div class="field item form-group">
+                        <label class="col-form-label col-md-3 col-sm-3  label-align">Description<span class="required">*</span></label>
+                        <div class="col-md-6 col-sm-6">
+                            <h6>
+                                <i>
+                                    @Html.TextAreaFor(m => m.tag.Description)
+                                </i>
+                            </h6>
+
+                        </div>
+                    </div>
+                    @Html.HiddenFor(m => m.tag.Id)
+                    <div class="ln_solid">
+                        <div class="form-group">
+                            <div class="col-md-6 offset-md-3">
+                                <button type='submit' class="btn btn-primary">Save</button>
+                            </div>
+                        </div>
+                    </div>
                 }
             </div>
         </div>

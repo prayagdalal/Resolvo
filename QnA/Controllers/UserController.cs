@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using QnA.ViewModels;
 using QnA.Models;
 using System.Web.Security;
+using System.Data.Entity;
 
 namespace QnA.Controllers
 {
@@ -17,16 +18,24 @@ namespace QnA.Controllers
         {
             _context = new QnAContext();
         }
+
+        protected override void Dispose(bool disposing)
+        {
+            _context.Dispose();
+        }
         //forUser
+
         public ActionResult Index()
         {
             var users = _context.User.ToList();
             var viewModel = new UserViewModel
             {
-                userList = users 
+                userList = users
             };
-            return View("User/Index",viewModel);
+            return View("User/Index", viewModel);
         }
+
+
 
         //for admin
         public ActionResult All()
@@ -46,7 +55,7 @@ namespace QnA.Controllers
                 type = "Add",
                 user = new User()
             };
-            return View("Admin/Add",viewModel);
+            return View("Admin/Add", viewModel);
         }
 
         [HttpPost]
@@ -65,7 +74,7 @@ namespace QnA.Controllers
                 getUser.Type = user.Type;
             }
             _context.SaveChanges();
-            return RedirectToAction("Index", "User");
+            return RedirectToAction("All", "User");
         }
 
         public ActionResult Edit(int id)
@@ -87,7 +96,6 @@ namespace QnA.Controllers
 
         }
 
-        [Authorize(Roles ="Admin")]
         public ActionResult Delete(int id)
         {
             var user = _context.User.SingleOrDefault(c => c.Id == id);
@@ -100,7 +108,7 @@ namespace QnA.Controllers
             _context.User.Remove(user);
             _context.SaveChanges();
 
-            return RedirectToAction("Index","User");
+            return RedirectToAction("All", "User");
 
         }
 
@@ -133,6 +141,45 @@ namespace QnA.Controllers
 
 
         }
+
+        public ActionResult Signup()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Insert(int[] tags, User user)
+        {
+            var recordCount = _context.User.Count(a => a.Email == user.Email);
+            if (recordCount >= 1)
+            {
+                return Json("Email Already Exist");
+            }
+            else
+            {
+                var User = new User();
+                User.Name = user.Name;
+                User.Email = user.Email;
+                User.Password = user.Password;
+                _context.User.Add(User);
+                _context.SaveChanges();
+
+                for (int i = 0; i < tags.Length; i++)
+                {
+                    var userTags = new UserTags();
+                    userTags.UserId = User.Id;
+                    userTags.TagId = tags[i];
+                    _context.UserTags.Add(userTags);
+                    _context.SaveChanges();
+
+                }
+                return RedirectToAction("All", "User");
+
+            }
+
+
+        }
+
 
         [HttpPost]
         public ActionResult Logout()

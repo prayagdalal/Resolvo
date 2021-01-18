@@ -7,7 +7,6 @@
     .profile_details .profile_view .left {
         margin-top: 0px;
     }
-
 </style>
 <div class="page-title">
     <div class="title_left">
@@ -18,24 +17,24 @@
 
 @foreach (var data in Model.userList)
 {
-<div class="animated flipInY col-lg-3 col-md-3 col-sm-6  ">
-    <div class="profile_details">
-        <div class="well profile_view">
-            <div class="col-sm-12">
-                <div class="left col-sm-8">
-                    <h2>@data.Name</h2>
-                    <p><strong>25000</strong></p>
-                    <p>
-                        <span><i class="fa fa-trophy" style="color:#FDBE01"></i>50</span>
-                        <span><i class="fa fa-trophy" style="color:#C7C7C7"></i>100</span>
-                        <span><i class="fa fa-trophy" style="color:#CF7A51"></i>500</span>
-                    </p>
-                </div>
-                <div class="right col-sm-4 text-center">
-                    <img src="~/Content/images/user.png" alt="" width="100" class="img-circle img-fluid">
+    <div class="animated flipInY col-lg-3 col-md-3 col-sm-6  ">
+        <div class="profile_details">
+            <div class="well profile_view">
+                <div class="col-sm-12">
+                    <div class="left col-sm-8">
+                        <h2>@data.Name</h2>
+                        <p><strong>25000</strong></p>
+                        <p>
+                            <span><i class="fa fa-trophy" style="color:#FDBE01"></i>50</span>
+                            <span><i class="fa fa-trophy" style="color:#C7C7C7"></i>100</span>
+                            <span><i class="fa fa-trophy" style="color:#CF7A51"></i>500</span>
+                        </p>
+                    </div>
+                    <div class="right col-sm-4 text-center">
+                        <img src="~/Content/images/user.png" alt="" width="100" class="img-circle img-fluid">
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 }

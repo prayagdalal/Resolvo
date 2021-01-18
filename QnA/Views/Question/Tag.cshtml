@@ -1,0 +1,118 @@
+﻿@model QnA.ViewModels.QuestionViewModel
+@{
+    ViewBag.Title = "Add";
+    Layout = "~/Views/Shared/ClientMaster.cshtml";
+}
+<div class="page-title">
+    <div class="title_left">
+        <h3>Questions</h3>
+    </div>
+
+    <div class="title_right">
+        <div class="col-md-5 col-sm-5 form-group pull-right top_search">
+
+
+        </div>
+    </div>
+</div>
+<div class="clearfix"></div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>@Model.Tagname</h2>
+                <div class="clearfix"></div>
+            </div>
+
+            <div class="x_content">
+
+                <div class="col-md-9 col-sm-9  ">
+
+
+                    <div class="main-questions-list">
+                        <ul id="main_questions_list">
+                            @foreach (var question in Model.forumList)
+                            {
+                                <li itemprop="itemListElement" itemscope="" class="question-item post-2341 question type-question status-publish hentry question_category-business qa_tag-business-2 qa_tag-technology-2" data-id="2341">
+                                    <div itemprop="item" itemscope="">
+                                        <div class="col-md-8 col-xs-8 q-left-content">
+
+                                            <div class="q-ltop-content">
+                                                <h2 itemprop="name">
+                                                    <a itemprop="url" href="" class="question-title">
+                                                        @question.Title
+                                                    </a>
+                                                </h2>
+                                            </div>
+                                            <div class="q-lbtm-content">
+
+                                                <div class="question-cat">
+                                                    <ul class="question-tags">
+                                                        @foreach (var tag in question.tags)
+                                                        {
+                                                            <li>
+                                                                <a class="q-tag" href="">
+                                                                    @tag.Tag.Name
+                                                                </a>
+                                                            </li>
+
+                                                        }
+
+                                                    </ul>
+                                                    <div class="clearfix"></div>
+                                                    <span itemprop="dateCreated" id="timeago" datetime="on July 14, 2016" class="date-time">
+                                                        @question.DateTime.ToString("MMM/dd/yyyy hh:mm  tt")
+                                                    </span>
+                                                    <span>By</span>
+                                                    <span class="question-category">
+                                                        <a href="">@question.User.Name</a>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div><!-- end left content -->
+                                        <div class="col-md-4 col-xs-4 q-right-content">
+                                            <ul class="question-statistic">
+
+                                                <li class="active">
+                                                    <span itemprop="answerCount" class="question-answers" id="cnt">
+                                                        @question.threadlist.Count
+                                                    </span>
+                                                    answers
+                                                </li>
+                                                <li>
+                                                    <span itemprop="upvoteCount" class="question-votes">
+                                                        0
+                                                    </span>
+                                                    votes
+                                                </li>
+                                            </ul>
+                                            <div class="pumping">
+                                            </div>
+                                        </div><!-- end right content -->
+                                        <div class="clearfix"></div>
+                                    </div>
+                                </li>
+
+                            }
+                        </ul>
+                    </div>
+
+
+                </div>
+
+                <!-- start project-detail sidebar -->
+                <div class="col-md-3 col-sm-3  ">
+
+                    right content
+
+                </div>
+                <!-- end project-detail sidebar -->
+
+            </div>
+        </div>
+    </div>
+
+</div>
+<script>
+

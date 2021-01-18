@@ -1,16 +1,1 @@
-[ { "value": 1 , "text": "Amsterdam"   , "continent": "Europe"    },
-  { "value": 2 , "text": "London"      , "continent": "Europe"    },
-  { "value": 3 , "text": "Paris"       , "continent": "Europe"    },
-  { "value": 4 , "text": "Washington"  , "continent": "America"   },
-  { "value": 5 , "text": "Mexico City" , "continent": "America"   },
-  { "value": 6 , "text": "Buenos Aires", "continent": "America"   },
-  { "value": 7 , "text": "Sydney"      , "continent": "Australia" },
-  { "value": 8 , "text": "Wellington"  , "continent": "Australia" },
-  { "value": 9 , "text": "Canberra"    , "continent": "Australia" },
-  { "value": 10, "text": "Beijing"     , "continent": "Asia"      },
-  { "value": 11, "text": "New Delhi"   , "continent": "Asia"      },
-  { "value": 12, "text": "Kathmandu"   , "continent": "Asia"      },
-  { "value": 13, "text": "Cairo"       , "continent": "Africa"    },
-  { "value": 14, "text": "Cape Town"   , "continent": "Africa"    },
-  { "value": 15, "text": "Kinshasa"    , "continent": "Africa"    }
-]
+[{"Id":2,"Name":"javaScript","Description":"javascriptDesc1","CountQuestion":0},{"Id":3,"Name":"python","Description":"pythonDescription","CountQuestion":0},{"Id":4,"Name":"Java","Description":"Java Descriptions","CountQuestion":0},{"Id":5,"Name":"c#","Description":"cuhriuv ireugf ei","CountQuestion":0},{"Id":6,"Name":"ionic","Description":"frufg 4iuhgi fwu4yg ","CountQuestion":0},{"Id":7,"Name":"Flutter","Description":"Native App","CountQuestion":0},{"Id":8,"Name":"dart","Description":"cwrfr erver","CountQuestion":0},{"Id":9,"Name":"c#2","Description":"ewfwrfwr","CountQuestion":0},{"Id":10,"Name":"python2.0","Description":"fwrfwrfwr","CountQuestion":0},{"Id":11,"Name":"tyty","Description":"cergwgth","CountQuestion":0}]

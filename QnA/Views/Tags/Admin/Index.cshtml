@@ -15,46 +15,54 @@
             <a href="@Url.Action("Add","Tags")" class="btn btn-primary" style="float:right">
                 + Add
             </a>
-@*            <button type="button" class="btn btn-primary" style="float:right">+ Add</button>
-*@        </div>
+            @*            <button type="button" class="btn btn-primary" style="float:right">+ Add</button>
+            *@
+        </div>
     </div>
 </div>
 
 @foreach (var data in Model.taglist)
 {
-<div class="animated flipInY col-lg-3 col-md-3 col-sm-6  ">
-    <div class="card text-dark bg-light mb-3">
-        <div class="card-header">
-            @data.Name
-            <span style="right:1em;float:right;margin: 0px 0px 0px 5px;">
+    <div class="animated flipInY col-lg-3 col-md-3 col-sm-6  ">
+        <div class="card text-dark bg-light mb-3">
+            <div class="card-header">
+                <h3>
+                    <b>
+                        @data.Name
+                    </b>
+                </h3>
+                <span style="right:1em;float:right;margin: 0px 0px 0px 5px;">
 
-                <a href="@Url.Action("Delete","Tags",new { id=data.Id })">
-                    <i class='fa fa-trash'>
-                    </i>
-                </a>
-                
+                    <a href="@Url.Action("Delete","Tags",new { id=data.Id })">
+                        <i class='fa fa-trash'>
+                        </i>
+                    </a>
 
-            </span>
-            <span style="right:1em;float:right;margin: 0px 5px 0px 5px;
+
+                </span>
+                <span style="right:1em;float:right;margin: 0px 5px 0px 5px;
 ">
-                <a href="@Url.Action("Edit","Tags",new { id = data.Id })">
-                    <i class="fa fa-pencil">
-                    </i>
-                </a>
-              @*  <i class="fa fa-pencil">
-                    @Html.ActionLink("", "Edit", "Tags", new { id = data.Id }, null)
-                </i>*@
-            </span>
+                    <a href="@Url.Action("Edit","Tags",new { id = data.Id })">
+                        <i class="fa fa-pencil">
+                        </i>
+                    </a>
 
-        </div>
-        <div class="card-body">
-            <p class="card-text">@data.Description</p>
-        </div>
-        <div class="card-footer">
-            <small class="text-muted">12345 Questions</small>
+                </span>
+
+            </div>
+            <div class="card-body">
+                <h6>
+                    <i>
+                        <p class="card-text">@data.Description</p>
+                    </i>
+                </h6>
+
+            </div>
+            <div class="card-footer">
+                <p>@data.CountQuestion Questions</p>
+            </div>
         </div>
     </div>
-</div>
 }
 
 

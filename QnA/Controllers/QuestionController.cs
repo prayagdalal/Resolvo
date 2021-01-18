@@ -14,6 +14,11 @@ using Microsoft.Owin.Security;*/
 
 namespace QnA.Controllers
 {
+    public class Flag {
+        public int statusflag { get; set; }
+        public int vote { get; set; }
+    }
+
     public class QuestionController : Controller
     {
         // GET: Forum
@@ -57,12 +62,18 @@ namespace QnA.Controllers
                 data.tags = getQuestionTags;
             }
 
+            foreach (var data in getQuestions)
+            {
+                var threadlist = _context.Thread.Include(c => c.Forum).Include(c => c.User).Where(c => c.ForumId == data.Id).Where(c => c.ParentThreadId == 0).ToList();
+                data.threadlist = threadlist;
+            }
+
             var viewModel = new QuestionViewModel
             {
                 forumList = getQuestions
             };
 
-            return View();
+            return View(viewModel);
 
         }
 
@@ -77,12 +88,18 @@ namespace QnA.Controllers
                 data.tags = getQuestionTags;
             }
 
+            foreach (var data in getQuestions)
+            {
+                var threadlist = _context.Thread.Include(c => c.Forum).Include(c => c.User).Where(c => c.ForumId == data.Id).Where(c => c.ParentThreadId == 0).ToList();
+                data.threadlist = threadlist;
+            }
+
             var viewModel = new QuestionViewModel
             {
                 forumList = getQuestions
             };
 
-            return View();
+            return View(viewModel);
 
         }
 
@@ -92,7 +109,8 @@ namespace QnA.Controllers
             var viewModel = new QuestionViewModel
             {
                 type = "Add",
-                forum = new Forum()
+                forum = new Forum(),
+                Id = loginuserid
             };
             return View(viewModel);
         }
@@ -210,8 +228,17 @@ namespace QnA.Controllers
             {
                 statusflag = 4;
             }
-            
-            return Json(statusflag);
+
+            var getThreadVote = _context.Forum.Single(c => c.Id == ForumId);
+            var up = getThreadVote.Upvote;
+            var down = getThreadVote.Downvote;
+            var vote = up - down;
+
+            var obj = new Flag();
+            obj.statusflag = statusflag;
+            obj.vote = vote;
+           
+            return Json(obj);
 
 
         }
@@ -259,7 +286,16 @@ namespace QnA.Controllers
                 statusflag = 4;
             }
 
-            return Json(statusflag);
+            var getThreadVote = _context.Forum.Single(c => c.Id == ForumId);
+            var up = getThreadVote.Upvote;
+            var down = getThreadVote.Downvote;
+            var vote = up - down;
+
+            var obj = new Flag();
+            obj.statusflag = statusflag;
+            obj.vote = vote;
+
+            return Json(obj);
         }
 
 
@@ -356,7 +392,17 @@ namespace QnA.Controllers
             {
                 statusflag = 4;
             }
-             return Json(statusflag);
+
+            var getThreadVote = _context.Thread.Single(c => c.Id == ThreadId);
+            var up = getThreadVote.Upvote;
+            var down = getThreadVote.Downvote;
+            var vote = up - down;
+
+            var obj = new Flag();
+            obj.statusflag = statusflag;
+            obj.vote = vote;
+
+            return Json(obj);
         }
 
         public ActionResult ThreadDownVote(int ThreadId)
@@ -402,7 +448,16 @@ namespace QnA.Controllers
                 statusflag = 4;
             }
 
-            return Json(statusflag);
+            var getThreadVote = _context.Thread.Single(c => c.Id == ThreadId);
+            var up = getThreadVote.Upvote;
+            var down = getThreadVote.Downvote;
+            var vote = up - down;
+
+            var obj = new Flag();
+            obj.statusflag = statusflag;
+            obj.vote = vote;
+
+            return Json(obj);
         }
 
         public ActionResult AddThread(Thread thread)
@@ -412,6 +467,19 @@ namespace QnA.Controllers
             return Json("done");
         }
 
+        [HttpGet]
+        public ActionResult EditThread(int threadid)
+        {
+            var thread = _context.Thread.SingleOrDefault(c => c.Id == threadid);
+
+            var viewModel = new QuestionViewModel { 
+                thread = thread
+            };
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
         public ActionResult EditThread(Thread thread)
         {
             var getThread = _context.Thread.Single(c => c.Id == thread.Id);
@@ -438,9 +506,16 @@ namespace QnA.Controllers
 
         public ActionResult AddComment(Thread thread)
         {
-            _context.Thread.Add(thread);
+            var Thread = new Thread();
+            Thread.ParentThreadId = thread.ParentThreadId;
+            Thread.Body = thread.Body;
+            Thread.ForumId = thread.ForumId;
+            Thread.UserId = thread.UserId;
+            _context.Thread.Add(Thread);
             _context.SaveChanges();
-            return Json("done");
+
+            var getThread = _context.Thread.Include(c => c.User).SingleOrDefault(c => c.Id == Thread.Id);
+            return Json(getThread);
         }
 
         public ActionResult DeleteComment(int ThreadId)
@@ -454,7 +529,8 @@ namespace QnA.Controllers
 
             _context.Thread.Remove(getThread);
             _context.SaveChanges();
-            return Json("done");
+
+            return Json(true);
         }
 
         public ActionResult sample()
@@ -468,6 +544,41 @@ namespace QnA.Controllers
                 unid = unid,
                 thread = thread
             });
+        }
+
+        public ActionResult Tag(int tagId)
+        {
+            List<int> forumList = new List<int>();
+
+            var getForumTags = _context.ForumTags.Where(c => c.TagId == tagId).ToList();
+            foreach (var data in getForumTags)
+            {
+                forumList.Add(data.ForumId);
+            }
+
+            var getQuestions = _context.Forum.Include(c => c.User).Where(c => forumList.Contains(c.Id)).ToList();
+
+
+            foreach (var data in getQuestions)
+            {
+                var getQuestionTags = _context.ForumTags.Include(c => c.Tag).Include(c => c.Forum).Where(c => c.ForumId == data.Id).ToList();
+                data.tags = getQuestionTags;
+            }
+            foreach (var data in getQuestions)
+            {
+                var threadlist = _context.Thread.Include(c => c.Forum).Include(c => c.User).Where(c => c.ForumId == data.Id).Where(c => c.ParentThreadId == 0).ToList();
+                data.threadlist = threadlist;
+            }
+            var getTagname = _context.Tag.SingleOrDefault(c => c.Id == tagId);
+
+            var viewModel = new QuestionViewModel
+            {
+                forumList = getQuestions,
+                Tagname = getTagname.Name
+
+            };
+
+            return View(viewModel);
         }
 
 

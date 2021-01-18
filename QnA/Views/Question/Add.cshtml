@@ -7,7 +7,7 @@
     /* scaffolding */
     /* ----------- */
 
-  
+
 
     /* base styles */
     /* ----------- */
@@ -20,9 +20,10 @@
     .bootstrap-tagsinput {
         width: 100%
     }
-    .bootstrap-tagsinput .tag {
-        background: gray;
-    }
+
+        .bootstrap-tagsinput .tag {
+            background: gray;
+        }
 
     .typeahead,
     .tt-query,
@@ -118,7 +119,6 @@
     #rtl-support .tt-menu {
         text-align: right;
     }
-
 </style>
 <div class="page-title">
     <div class="title_left">
@@ -143,13 +143,13 @@
     <div class="col-md-12 col-sm-12">
         <div class="x_panel">
             <div class="x_content">
-               <form>
-                
+                <form>
+
                     <span class="section">@Model.type Question</span>
                     <div class="field item form-group">
                         <label class="col-form-label col-md-3 col-sm-3  label-align">Title<span class="required">*</span></label>
                         <div class="col-md-6 col-sm-6">
-                            <input type="text" id="title" class="form-control" />                        
+                            <input type="text" id="title" class="form-control" />
                         </div>
                     </div>
 
@@ -167,15 +167,15 @@
                     <div class="field item form-group">
                         <label class="col-form-label col-md-3 col-sm-3  label-align">Tags<span class="required">*</span></label>
                         <div class="col-md-6 col-sm-6">
-                            <input class="form-control" data-role="tagsinput" id="tags" type="text">
+                            <input class="form-control" data-role="tagsinput" id="Tags" type="text">
                         </div>
                     </div>
 
-                    @Html.HiddenFor(m => m.forum.Id)
+
                     <div class="ln_solid">
                         <div class="form-group">
                             <div class="col-md-6 offset-md-3">
-                                <button type='submit' class="btn btn-primary">Save</button>
+                                <button type='submit' class="btn btn-primary" onclick="AddQuestion()">Save</button>
                             </div>
                         </div>
                     </div>
@@ -185,6 +185,42 @@
     </div>
 </div>
 <script>
+function AddQuestion() {
+			event.preventDefault();
+			var arr = new Array();
+			arr = $('#Tags').val();
+			var data = $('#Tags').val();
+			var arr = data.split(',');
+			var obj = {
+				tags: arr,
+				forum: {
+					Title: $('#title').val(),
+					Body: $(".ql-editor").html(),
+					UserId:@Model.Id
+						}
+			}
+										$.ajax({
+											url: "/Question/AddForum",
+											method: "POST",
+											data: JSON.stringify(obj),
+											contentType: "application/json",
+											cache: false,
+												success: function (res) {
+													if (res == "Done") {
+														alert("Question Inserted");
+                                                    }
+                                                    else
+														alert("Question Not Inserted");
+
+
+												},
+
+											error: function (err) {
+
+											}
+										});
+
+									}
     var toolbarOptions = [
         [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
 
@@ -202,24 +238,24 @@
 
 
     var cities = new Bloodhound({
-        datumTokenizer: Bloodhound.tokenizers.obj.whitespace('text'),
+        datumTokenizer: Bloodhound.tokenizers.obj.whitespace('Name'),
         queryTokenizer: Bloodhound.tokenizers.whitespace,
         prefetch: "../Content/jsonData/cities.json"
     });
     cities.initialize();
 
-    var elt = $('#tags');
+    var elt = $('#Tags');
     elt.tagsinput({
-        itemValue: 'value',
-        itemText: 'text',
+        itemValue: 'Id',
+        itemText: 'Name',
         typeaheadjs: {
             name: 'cities',
-            displayKey: 'text',
+            displayKey: 'Name',
             source: cities.ttAdapter()
         }
     });
 
-    $("#tags").val()	
+    $("#Tags").val()
 
     //id of forumid is forum_id(hiddentextbox)
 

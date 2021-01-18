@@ -103,14 +103,37 @@
                                         <div class="question-not-mobile question-image-vote question-vote-sticky">
                                             <div class="">
                                                 <ul class="question-vote">
-                                                    <li class="question-vote-up"><button id="@("fupvote"+Model.forum.Id)" updateid="@("fupvote-"+Model.forum.Id)" class="fupvote" title="upvote"><i class="icon-up-dir"></i></button></li>
+                                                    @{
+
+                                                        var upcolor = "#000000";
+                                                    }
+                                                    @foreach (var data in Model.forum.ForumVotes)
+                                                    {
+                                                        if (data.UserId == Model.Id && data.UpVote == true)
+                                                        {
+                                                            upcolor = "#2D6ff7";
+                                                        }
+                                                    }
+                                                    <li class="question-vote-up"><button id="@("fupvote"+Model.forum.Id)" updateid="@("fupvote-"+Model.forum.Id)" class="fupvote" title="upvote"><i class="icon-up-dir" style="color:@upcolor"></i></button></li>
+
                                                     @{
                                                         var forumVotes = Model.forum.Upvote - Model.forum.Downvote;
 
                                                     }
-                                                    <li class="vote_result" itemprop="upvoteCount">@forumVotes</li>
+                                                    <li class="vote_result" id="@("fvotecount"+Model.forum.Id)">@forumVotes</li>
                                                     <li class="li_loader"><span class="loader_3 fa-spin"></span></li>
-                                                    <li class="question-vote-down"><button id="@("fdownvote"+Model.forum.Id)" updateid="@("fdownvote-"+Model.forum.Id)"  class="fdownvote" title="downvote"><i class="icon-down-dir"></i></button></li>
+                                                    @{
+
+                                                        var downcolor = "#000000";
+                                                    }
+                                                    @foreach (var data in Model.forum.ForumVotes)
+                                                    {
+                                                        if (data.UserId == Model.Id && data.DownVote == true)
+                                                        {
+                                                            downcolor = "#2D6ff7";
+                                                        }
+                                                    }
+                                                    <li class="question-vote-down"><button id="@("fdownvote"+Model.forum.Id)" updateid="@("fdownvote-"+Model.forum.Id)" class="fdownvote" title="downvote"><i class="icon-down-dir" style="color:@downcolor"></i></button></li>
                                                 </ul>
                                             </div>
                                         </div>
@@ -121,7 +144,7 @@
                                                 <div class="question-content-text">
                                                     <div class="all_signle_post_content">
                                                         <div class="content-text" itemprop="text">
-                                                            @Model.forum.Body
+                                                            @Html.Raw(WebUtility.HtmlDecode(@Model.forum.Body))
                                                         </div>
                                                         <div class="clearfix"></div>
                                                         <div></div>
@@ -208,14 +231,36 @@
                                                                     <div class="question-not-mobile question-image-vote question-vote-sticky">
                                                                         <div class="">
                                                                             <ul class="question-vote">
-                                                                            <li class="question-vote-up"><button  id="@("tupvote"+data.Id)" updateid="@("tupvote-"+data.Id)" class="tupvote" title="Like"><i class="icon-up-dir"></i></button></li>
+                                                                                @{
+
+                                                                                    var tupcolor = "#000000";
+                                                                                }
+                                                                                @foreach (var item in data.ThreadVotes)
+                                                                                {
+                                                                                    if (item.UserId == Model.Id && item.UpVote == true)
+                                                                                    {
+                                                                                        tupcolor = "#2D6ff7";
+                                                                                    }
+                                                                                }
+                                                                                <li class="question-vote-up"><button id="@("tupvote"+data.Id)" updateid="@("tupvote-"+data.Id)" class="tupvote" title="Like"><i class="icon-up-dir" style="color:@tupcolor"></i></button></li>
                                                                                 @{
                                                                                     var threadVotes = data.Upvote - data.Downvote;
 
                                                                                 }
-                                                                            <li class="vote_result" itemprop="upvoteCount">@threadVotes</li>
+                                                                                <li class="vote_result" id="@("tvotecount"+data.Id)">@threadVotes</li>
                                                                                 <li class="li_loader"><span class="loader_3 fa-spin"></span></li>
-                                                                                <li class="question-vote-down"><button id="@("tdownvote"+data.Id)" updateid="@("tdownvote-"+data.Id)" class="tdownvote" title="Dislike"><i class="icon-down-dir"></i></button></li>
+                                                                                @{
+
+                                                                                    var tdowncolor = "#000000";
+                                                                                }
+                                                                                @foreach (var item in data.ThreadVotes)
+                                                                                {
+                                                                                    if (item.UserId == Model.Id && item.DownVote == true)
+                                                                                    {
+                                                                                        tdowncolor = "#2D6ff7";
+                                                                                    }
+                                                                                }
+                                                                                <li class="question-vote-down"><button id="@("tdownvote"+data.Id)" updateid="@("tdownvote-"+data.Id)" class="tdownvote" title="Dislike"><i class="icon-down-dir" style="color:@tdowncolor"></i></button></li>
                                                                             </ul>
                                                                         </div>
                                                                     </div>
@@ -232,8 +277,8 @@
                                                                                         if (Model.Id == data.UserId)
                                                                                         {
                                                                                             <ul class="footer-meta">
-
-                                                                                                <li class="best-answer-meta"><span class="editthread question-span" updateid="@data.Id">Edit</span></li>
+                                                                                                
+                                                                                                <li class="best-answer-meta"><a href="@Url.Action("EditThread", "Question", new { threadid = data.Id})">Edit</a>
                                                                                                 <li class="best-answer-meta"><span class="deletethread question-span" updateid="@data.Id">Delete</span></li>
                                                                                             </ul>
                                                                                         }
@@ -250,23 +295,24 @@
                                                                                     <div class="question-footer" id="@("commentlist"+data.Id)" style="margin-top:0.5rem">
                                                                                         @foreach (var cmt in data.CommentList)
                                                                                         {
-                                                                                        <div id="@("commentrow" + cmt.Id)">
-                                                                                            @cmt.Body -<a href="">@cmt.User.Name</a>
-                                                                                            @{
-                                                                                                if (Model.Id == cmt.UserId)
-                                                                                                {
-                                                                                                    <a href="javascript:void(0)" class="deletecomment" updateid="@cmt.Id">Delete</a>
+                                                                                            <div id="@("commentrow" + cmt.Id)">
+                                                                                                @cmt.Body -<a href="">@cmt.User.Name</a>
+                                                                                                @{
+                                                                                                    if (Model.Id == cmt.UserId)
+                                                                                                    {
+                                                                                                        <a href="javascript:void(0)" class="deletecomment" updateid="@cmt.Id">Delete</a>
+                                                                                                    }
                                                                                                 }
-                                                                                             }
-                                                                                                </div><hr>
+                                                                                            </div><hr>
                                                                                         }
 
-                                                                                        <sapn style="font-size:0.8rem;"><a href="javascript:void(0)" class="opencommentbox" updateid="@data.Id"> add a comment</a></sapn><br />
-                                                                                        <div id="@("commentbox"+data.Id)" class="commentbox">
+
+                                                                                    </div>
+                                                                                    <sapn style="font-size:0.8rem;"><a href="javascript:void(0)" class="opencommentbox" updateid="@data.Id"> add a comment</a></sapn><br />
+                                                                                    <div id="@("commentbox"+data.Id)" class="commentbox">
                                                                                         <textarea class="form-control" id="@("commentinput"+data.Id)"></textarea>
                                                                                         <a class="addcomment meta-answer meta-answer-a" updateid="@data.Id" style=" padding: 5px; letter-spacing: 0;" href="javascript:void(0)">Add Comment</a>
                                                                                         <a class="cancelcomment meta-answer meta-answer-a" updateid="@data.Id" style="float:right; padding: 5px; margin-right:5px" href="javascript:void(0)">cancel</a>
-                                                                                        </div>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
@@ -390,25 +436,29 @@
     })
     //delete forum
     $(".deleteforum").click(function () {
-        var forumid = $(this).attr("updateid");
+        var forumid = parseInt($(this).attr("updateid"));
         var confirm = window.confirm("Really delete this Question?");
         if (confirm == true) {
-            alert(forumid)
+            //alert(forumid)
+            DeleteForum(forumid)
         }
     })
     //edit thread
-    $(".editthread").click(function () {
-        var threadid = $(this).attr("updateid");
-        alert(threadid)
-    })
+@*    $(".editthread").click(function () {
+        var threadid = parseInt($(this).attr("updateid"));
+
+        window.location.href = '@Url.Action("EditThread", "Question")? id =' + threadid;
+        //alert(threadid)
+    })*@
     //delete thread
     $(".deletethread").click(function () {
-        var threadid = $(this).attr("updateid");
+        var threadid = parseInt($(this).attr("updateid"));
         var confirm = window.confirm("Really delete this post?");
         if (confirm == true) {
-            alert(threadid)
+            DeleteThread(threadid)
+            //alert(threadid)
         }
-       
+
     })
 
     //open comment div
@@ -419,8 +469,9 @@
     })
     //add comment
     $(".addcomment").click(function () {
-        var threadid = $(this).attr("updateid");
-        alert(threadid)
+        var threadid = parseInt($(this).attr("updateid"));
+        AddComment(threadid);
+        //alert(threadid)
     })
     //hide comment div
     $(".cancelcomment").click(function () {
@@ -430,15 +481,17 @@
     })
     //delete comment
     $(document).on('click', '.deletecomment', function () {
-        var threadid = $(this).attr("updateid");
+        var threadid = parseInt($(this).attr("updateid"));
         var confirm = window.confirm("Really delete this comment?");
         if (confirm == true) {
-            alert(threadid)
+
+            DeleteComment(threadid)
+            //alert(threadid)
         }
     });
 
-    
-    
+
+
 
 
 
@@ -469,29 +522,11 @@
         });
     }
 
-    function EditThread() {
+
+
+    function DeleteThread(threadid) {
         var obj = {
-
-        }
-
-        $.ajax({
-            url: "/Question/EditThread",
-            method: "POST",
-            data: JSON.stringify(obj),
-            contentType: "application/json",
-            cache: false,
-            success: function (res) {
-                console.log(res);
-            },
-            error: function (err) {
-
-            }
-        });
-    }
-
-    function DeleteThread() {
-        var obj = {
-
+            ThreadId: threadid
         }
 
         $.ajax({
@@ -502,6 +537,7 @@
             cache: false,
             success: function (res) {
                 console.log(res);
+                window.location.href='@Url.Action("Thread", "Question",new { id = 1 })'
             },
             error: function (err) {
 
@@ -509,9 +545,15 @@
         });
     }
 
-    function AddComment() {
-        var obj = {
+    function AddComment(threadid) {
 
+        var obj = {
+            thread: {
+                ParentThreadId: threadid,
+                Body: $("#commentinput" + threadid).val(),
+                ForumId:@Model.forum.Id,
+                UserId:@Model.Id
+            }
         }
 
         $.ajax({
@@ -522,6 +564,13 @@
             cache: false,
             success: function (res) {
                 console.log(res);
+                html = ""
+                html += "<div id='commentrow" + res.Id + "'>"
+                html += res.Body + " - <a href=''>" +res.User.Name+"</a><a href='javascript:void(0)' class='deletecomment' updateid='" + res.Id + "'> Delete</a>"
+                html += "</div><hr>"
+                $("#commentbox" + threadid).css('display', 'none');
+                $("#commentlist" + threadid).append(html);
+
             },
             error: function (err) {
 
@@ -529,9 +578,9 @@
         });
     }
 
-    function DeleteComment() {
+    function DeleteComment(threadid) {
         var obj = {
-
+            ThreadId: threadid
         }
 
         $.ajax({
@@ -542,6 +591,9 @@
             cache: false,
             success: function (res) {
                 console.log(res);
+                if (res) {
+                    $("#commentrow" + threadid).remove();
+                }
             },
             error: function (err) {
 
@@ -563,6 +615,42 @@
             cache: false,
             success: function (res) {
                 console.log(res);
+                //1-add
+                //2-delete
+                //3-update
+                //4-none
+                //votecount = parseInt($("#tvotecount" + threadid).text());
+                if (res.statusflag == 1) {
+                    //tvotecount
+                    //var count = votecount + 1;
+                    var uid = "#tupvote" + threadid
+                    $(uid + " > i").css("color", "#2D6ff7");
+                    var did = "#tdownvote" + threadid
+                    $(did + " > i").css("color", "#000000");
+
+                    $("#tvotecount" + threadid).text(res.vote);
+                }
+                else if (res.statusflag == 2) {
+                   // var count = votecount - 1;
+                    var uid = "#tupvote" + threadid
+                    $(uid + " > i").css("color", "#000000");
+                    var did = "#tdownvote" + threadid
+                    $(did + " > i").css("color", "#000000");
+
+                    $("#tvotecount" + threadid).text(res.vote);
+                }
+                else if (res.statusflag == 3) {
+                    //var count = votecount - 2;
+                    var uid = "#tupvote" + threadid
+                    $(uid + " > i").css("color", "#2D6ff7");
+                    var did = "#tdownvote" + threadid
+                    $(did + " > i").css("color", "#000000");
+
+                    $("#tvotecount" + threadid).text(res.vote);
+                }
+                else {
+                    alert("you can't vote on your own questions")
+                }
             },
             error: function (err) {
 
@@ -583,6 +671,42 @@
             cache: false,
             success: function (res) {
                 console.log(res);
+                //1-add
+                //2-delete
+                //3-update
+                //4-none
+                //votecount = parseInt($("#tvotecount" + threadid).text());
+                if (res.statusflag == 1) {
+                    //tvotecount
+                    //var count = votecount - 1;
+                    var uid = "#tupvote" + threadid
+                    $(uid + " > i").css("color", "#000000");
+                    var did = "#tdownvote" + threadid
+                    $(did + " > i").css("color", "#2D6ff7");
+
+                    $("#tvotecount" + threadid).text(res.vote);
+                }
+                else if (res.statusflag == 2) {
+                    //var count = votecount + 1;
+                    var uid = "#tupvote" + threadid
+                    $(uid + " > i").css("color", "#000000");
+                    var did = "#tdownvote" + threadid
+                    $(did + " > i").css("color", "#000000");
+
+                    $("#tvotecount" + threadid).text(res.vote);
+                }
+                else if (res.statusflag == 3) {
+                    //var count = votecount + 2;
+                    var uid = "#tupvote" + threadid
+                    $(uid + " > i").css("color", "#000000");
+                    var did = "#tdownvote" + threadid
+                    $(did + " > i").css("color", "#2D6ff7");
+
+                    $("#tvotecount" + threadid).text(res.vote);
+                }
+                else {
+                    alert("you can't vote on your own questions")
+                }
             },
             error: function (err) {
 
@@ -607,6 +731,36 @@
             //2-delete
             //3-update
             //4-none
+                //votecount = parseInt($("#fvotecount" + forumid).text());
+                if (res.statusflag == 1) {
+                    //tvotecount
+                    //var count = votecount + 1;
+                    var uid = "#fupvote" + forumid
+                    $(uid + " > i").css("color", "#2D6ff7");
+                    var did = "#fdownvote" + forumid
+                    $(did + " > i").css("color", "#000000");
+
+                    $("#fvotecount" + forumid).text(res.vote);
+                }
+                else if (res.statusflag == 2) {
+                    //var count = votecount - 1;
+                    var uid = "#fupvote" + forumid
+                    $(uid + " > i").css("color", "#000000");
+                    var did = "#fdownvote" + forumid
+                    $(did + " > i").css("color", "#000000");
+                    $("#fvotecount" + forumid).text(res.vote);
+                }
+                else if (res.statusflag == 3) {
+                    //var count = votecount - 2;
+                    var uid = "#fupvote" + forumid
+                    $(uid + " > i").css("color", "#2D6ff7");
+                    var did = "#fdownvote" + forumid
+                    $(did + " > i").css("color", "#000000");
+                    $("#fvotecount" + forumid).text(res.vote);
+                }
+                else {
+                    alert("you can't vote on your own questions")
+                }
             },
             error: function (err) {
 
@@ -627,6 +781,39 @@
             cache: false,
             success: function (res) {
                 console.log(res);
+                //1-add
+                //2-delete
+                //3-update
+                //4-none
+                //votecount = parseInt($("#fvotecount" + forumid).text());
+                if (res.statusflag == 1) {
+                    //tvotecount
+                    //var count = votecount - 1;
+                    var uid = "#fupvote" + forumid
+                    $(uid + " > i").css("color", "#000000");
+                    var did = "#fdownvote" + forumid
+                    $(did + " > i").css("color", "#2D6ff7");
+                    $("#fvotecount" + forumid).text(res.vote);
+                }
+                else if (res.statusflag == 2) {
+                    //var count = votecount + 1;
+                    var uid = "#fupvote" + forumid
+                    $(uid + " > i").css("color", "#000000");
+                    var did = "#fdownvote" + forumid
+                    $(did + " > i").css("color", "#000000");
+                    $("#fvotecount" + forumid).text(res.vote);
+                }
+                else if (res.statusflag == 3) {
+                    //var count = votecount + 2;
+                    var uid = "#fupvote" + forumid
+                    $(uid + " > i").css("color", "#000000");
+                    var did = "#fdownvote" + forumid
+                    $(did + " > i").css("color", "#2D6ff7");
+                    $("#fvotecount" + forumid).text(res.vote);
+                }
+                else {
+                    alert("you can't vote on your own questions")
+                }
             },
             error: function (err) {
 
@@ -634,6 +821,26 @@
         });
     }
 
+    function DeleteForum(forumid) {
+        var obj = {
+            ForumID: forumid
+        }
+
+        $.ajax({
+            url: "/Question/DeleteForum",
+            method: "POST",
+            data: JSON.stringify(obj),
+            contentType: "application/json",
+            cache: false,
+            success: function (res) {
+                console.log(res);
+                window.location.href='@Url.Action("All", "Question")'
+            },
+            error: function (err) {
+
+            }
+        });
+    }
 
 
 

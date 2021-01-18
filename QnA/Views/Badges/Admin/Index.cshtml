@@ -1,59 +1,64 @@
 ﻿@model QnA.ViewModels.BadgeViewModel
 @{
-	ViewBag.Title = "Index";
-	Layout = "~/Views/Shared/AdminMaster.cshtml";
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/AdminMaster.cshtml";
 }
 
 <div class="page-title">
-	<div class="title_left">
-		<h3>Badges</h3>
-	</div>
+    <div class="title_left">
+        <h3>Badges</h3>
+    </div>
 
-	<div class="title_right">
-		<div class="col-md-5 col-sm-5 form-group pull-right top_search">
+    <div class="title_right">
+        <div class="col-md-5 col-sm-5 form-group pull-right top_search">
 
-			<a href="@Url.Action("Add","Badges")" class="btn btn-primary" style="float:right">
-				+ Add
-			</a>
-			@*            <button type="button" class="btn btn-primary" style="float:right">+ Add</button>
-			*@
-		</div>
-	</div>
+            <a href="@Url.Action("Add","Badges")" class="btn btn-primary" style="float:right">
+                + Add
+            </a>
+            @*            <button type="button" class="btn btn-primary" style="float:right">+ Add</button>
+            *@
+        </div>
+    </div>
 </div>
 
 @foreach (var data in Model.badgelist)
 {
-	<div class="animated flipInY col-lg-3 col-md-3 col-sm-6  ">
-		<div class="card text-dark bg-light mb-3">
-			<div class="card-header">
-				@data.Title 
-				<span style="right:1em;float:right;margin: 0px 0px 0px 5px;">
-					<a href="@Url.Action("Delete","Badges",new { id=data.Id })">
-						<i class='fa fa-trash'>
-						</i>
-					</a>
-				</span>
-				<span style="right:1em;float:right;margin: 0px 5px 0px 5px;">
-					<a href="@Url.Action("Edit","Badges",new { id = data.Id })">
-						<i class="fa fa-pencil">
-						</i>
-					</a>
-				</span>
+    <div class="animated flipInY col-lg-3 col-md-3 col-sm-6  ">
+        <div class="card text-dark bg-light mb-3">
+            <div class="card-header">
+                <h3>
+                    <b>
+                        @data.Title
+                    </b>
+                </h3>
 
-			</div>
-			<div class="card-body">
-				<h6>Description</h6><p class="card-text">@data.Description</p>
-				<h6>Score</h6><p class="card-text">@data.Score</p>
-				<h6>BadgeType</h6><p class="card-text">@data.BadgeType</p>
+                <span style="right:1em;float:right;margin: 0px 0px 0px 5px;">
+                    <a href="@Url.Action("Delete","Badges",new { id=data.Id })">
+                        <i class='fa fa-trash'>
+                        </i>
+                    </a>
+                </span>
+                <span style="right:1em;float:right;margin: 0px 5px 0px 5px;">
+                    <a href="@Url.Action("Edit","Badges",new { id = data.Id })">
+                        <i class="fa fa-pencil">
+                        </i>
+                    </a>
+                </span>
+
+            </div>
+            <div class="card-body">
+                <h6>Description</h6><p class="card-text">@data.Description</p>
+                <h6>Score</h6><p class="card-text">@data.Score</p>
+                <h6>BadgeType</h6><p class="card-text">@data.BadgeType</p>
 
 
 
-			</div>
-			<div class="card-footer">
-				<small class="text-muted">12345 Questions</small>
-			</div>
-		</div>
-	</div>
+            </div>
+            <div class="card-footer">
+                <small class="text-muted">12345 Questions</small>
+            </div>
+        </div>
+    </div>
 }
 
 

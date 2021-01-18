@@ -82,10 +82,10 @@
 				cache: false,
 				success: function (res) {
 					if (res.Type == "Admin") {
-						window.location.href='@Url.Action("Index", "Dashboard")'
+						window.location.href='@Url.Action("All", "User")'
 					}
 					if (res.Type == "User") {
-						window.location.href='@Url.Action("Index", "Tags")'
+						window.location.href='@Url.Action("Index", "Question")'
 					}
 					if (res == "invalid user name or password")
 						$('#dangerid').show().html(res);

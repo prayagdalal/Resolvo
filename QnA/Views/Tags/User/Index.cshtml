@@ -15,14 +15,18 @@
 {
     <div class="animated flipInY col-lg-3 col-md-3 col-sm-6  ">
         <div class="card text-dark bg-light mb-3">
-            <div class="card-header">
-                @data.Name
-            </div>
+            <a href="/Question/Tag?tagId=@data.Id">
+                <div class="card-header">
+                    <h3>
+                        <b>@data.Name</b>
+                    </h3>
+                </div>
+            </a>
             <div class="card-body">
-                <p class="card-text">@data.Description</p>
+                <h6><i><p class="card-text">@data.Description</p></i></h6>
             </div>
             <div class="card-footer">
-                <small class="text-muted">12345 Questions</small>
+                <p>@data.CountQuestion Questions</p>
             </div>
         </div>
     </div>

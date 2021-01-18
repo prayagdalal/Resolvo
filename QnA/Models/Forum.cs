@@ -31,5 +31,9 @@ namespace QnA.Models
         
         [NotMapped]
         public List<ForumVotes> ForumVotes { get; set; }
+
+
+        [NotMapped]
+        public List<Thread> threadlist { get; set; }
     }
 }

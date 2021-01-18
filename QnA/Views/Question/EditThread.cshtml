@@ -1,0 +1,91 @@
+﻿@model QnA.ViewModels.QuestionViewModel
+@{
+    ViewBag.Title = "Add";
+    Layout = "~/Views/Shared/ClientMaster.cshtml";
+}
+<style>
+    .form-submit button {
+        font-family: "Roboto", Arial, sans-serif;
+        padding: 7px 16px;
+        font-size: 14px;
+        font-weight: 700;
+        display: inline-block;
+        line-height: normal;
+        border: none;
+        letter-spacing: 0.8px;
+        background-color: #2d6ff7;
+        color:white;
+    }
+</style>
+<div class="page-title">
+    <div class="title_left">
+        <h3>Edit Post</h3>
+    </div>
+
+</div>
+<div class="clearfix"></div>
+<div class="postbox">
+<div class="form-input form-textarea form-comment-editor">
+    <div style="height: 250px;" id="body">
+        @Html.Raw(WebUtility.HtmlDecode(@Model.thread.Body))
+    </div>
+</div>
+    <br />
+<p class="form-submit">
+    <button id="postanswer" class="button-default button-hide-click" style="width:100%" onclick="update()">Update Your Answer</button>
+</p>
+</div>
+<script>
+    var toolbarOptions = [
+        [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+
+        ['bold', 'italic', 'link', 'image'],        // toggled buttons
+        ['blockquote', 'code-block'],
+
+        [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'align': [] }],
+
+
+    ]
+    var quill = new Quill('#body', {
+        modules: { toolbar: toolbarOptions },
+        theme: 'snow'
+    })
+
+    function update() {
+        var body = $(".ql-editor").html()
+        if (body.length >= 100) {
+            EditThread();
+        }
+        else {
+
+        }
+
+    }
+    function EditThread() {
+
+        var obj = {
+            thread: {
+                Id:@Model.thread.Id,
+                Body: $(".ql-editor").html()
+            }
+        }
+
+        $.ajax({
+            url: "/Question/EditThread",
+            method: "POST",
+            data: JSON.stringify(obj),
+            contentType: "application/json",
+            cache: false,
+            success: function (res) {
+                console.log(res);
+                window.location.href='@Url.Action("Thread","Question",new { id = 1 })'
+            },
+            error: function (err) {
+
+            }
+        });
+
+
+    }
+
+</script>
