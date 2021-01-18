@@ -8,8 +8,17 @@ namespace QnA.Controllers
 {
 	public class HomeController : Controller
 	{
+		[AllowAnonymous]
 		public ActionResult Index()
 		{
+            if (User.Identity.IsAuthenticated)
+            {
+
+            }
+			else
+            {
+
+            }
 			return View();
 		}
 

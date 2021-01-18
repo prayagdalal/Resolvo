@@ -8,6 +8,7 @@ namespace QnA.ViewModels
 {
     public class QuestionViewModel
     {
+        public int Id { get; set; }
         public Forum forum { get; set; }
         public String type { get; set; }
         public List<Forum> forumList { get; set; }

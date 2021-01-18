@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using QnA.ViewModels;
 using QnA.Models;
+using System.Web.Security;
 
 namespace QnA.Controllers
 {
@@ -86,6 +87,7 @@ namespace QnA.Controllers
 
         }
 
+        [Authorize(Roles ="Admin")]
         public ActionResult Delete(int id)
         {
             var user = _context.User.SingleOrDefault(c => c.Id == id);
@@ -109,17 +111,19 @@ namespace QnA.Controllers
             return Content("workin");
         }
 
+        [HttpGet]
         public ActionResult Login()
         {
             return View();
         }
 
         [HttpPost]
-        public JsonResult Login(string username, string password)
+        public JsonResult Login(string email, string password)
         {
-            var res = _context.User.SingleOrDefault(u => u.Name == username && u.Password == password);
+            var res = _context.User.SingleOrDefault(u => u.Email == email && u.Password == password);
             if (res != null)
             {
+                FormsAuthentication.SetAuthCookie(res.Email, false);
                 return Json(res);
             }
             else
@@ -127,6 +131,15 @@ namespace QnA.Controllers
                 return Json("invalid user name or password");
             }
 
+
+        }
+
+        [HttpPost]
+        public ActionResult Logout()
+        {
+
+            FormsAuthentication.SignOut();
+            return RedirectToAction("Login");
 
         }
     }

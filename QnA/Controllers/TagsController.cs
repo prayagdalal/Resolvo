@@ -5,6 +5,8 @@ using System.Web;
 using QnA.Models;
 using QnA.ViewModels;
 using System.Web.Mvc;
+using System.Data.Entity;
+
 
 namespace QnA.Controllers
 {
@@ -101,5 +103,33 @@ namespace QnA.Controllers
             return RedirectToAction("All", "Tags");
 
         }
+
+        public ActionResult Questions(int tagId) 
+        {
+            List<int> forumList = new List<int>();
+
+            var getForumTags = _context.ForumTags.Where(c => c.TagId == tagId).ToList();
+            foreach (var data in getForumTags)
+            {
+                forumList.Add(data.ForumId);
+            }
+
+            var getQuestions = _context.Forum.Include(c => c.User).Where(c => forumList.Contains(c.Id)).ToList();
+
+
+            foreach (var data in getQuestions)
+            {
+                var getQuestionTags = _context.ForumTags.Include(c => c.Tag).Include(c => c.Forum).Where(c => c.ForumId == data.Id).ToList();
+                data.tags = getQuestionTags;
+            }
+
+            var viewModel = new QuestionViewModel
+            {
+                forumList = getQuestions
+            };
+
+            return View(viewModel);
+        }
+
     }
 }

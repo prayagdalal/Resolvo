@@ -70,7 +70,7 @@
 		function fnvalid() {
 			event.preventDefault();
 			var obj = {
-				username: $('#uname').val(),
+				email: $('#uname').val(),
 				password: $('#upass').val()
 			}
 
@@ -85,7 +85,7 @@
 						window.location.href='@Url.Action("Index", "Dashboard")'
 					}
 					if (res.Type == "User") {
-						window.location.href='@Url.Action("Index", "Question")'
+						window.location.href='@Url.Action("Index", "Tags")'
 					}
 					if (res == "invalid user name or password")
 						$('#dangerid').show().html(res);

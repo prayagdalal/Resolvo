@@ -17,7 +17,7 @@ namespace QnA.Controllers
     public class QuestionController : Controller
     {
         // GET: Forum
-        int loginuserid = 1;
+        int loginuserid = 3;
 
         private QnAContext _context;
         public QuestionController()
@@ -97,6 +97,7 @@ namespace QnA.Controllers
             return View(viewModel);
         }
 
+
         public ActionResult AddForum(int[] tags,Forum forum)
         {
             _context.Forum.Add(forum);
@@ -155,65 +156,110 @@ namespace QnA.Controllers
 
         }
 
+        public void UpdateForumVotes(int ForumId)
+        {
+            var UpVotes = _context.ForumVotes.Where(c => c.UpVote == true).Where(c => c.ForumId == ForumId).ToList();
+            var DownVotes = _context.ForumVotes.Where(c => c.DownVote == true).Where(c => c.ForumId == ForumId).ToList();
+
+            var getThread = _context.Forum.Single(c => c.Id == ForumId);
+            getThread.Upvote = UpVotes.Count;
+            getThread.Downvote = DownVotes.Count;
+            _context.SaveChanges();
+
+        }
 
         public ActionResult ForumUpVote(int ForumId)
         {
-            var getUserVote = _context.ForumVotes.Where(c => c.ForumId == ForumId).Where(c => c.UserId == loginuserid).SingleOrDefault();
+            //1-add
+            //2-delete
+            //3-update
+            //4-none
+            int statusflag;
+            var getThread = _context.Forum.SingleOrDefault(c => c.Id == ForumId);
+            if (getThread.UserId != loginuserid)
+            {
+                var getUserVote = _context.ForumVotes.Where(c => c.ForumId == ForumId).Where(c => c.UserId == loginuserid).SingleOrDefault();
 
-            if (getUserVote == null)
-            {
-                var voteObj = new ForumVotes();
-                voteObj.ForumId = ForumId;
-                voteObj.UserId = loginuserid;
-                voteObj.UpVote = true;
-                _context.ForumVotes.Add(voteObj);
-            }
-            else
-            {
-                if (getUserVote.UpVote)
+                if (getUserVote == null)
                 {
-                    _context.ForumVotes.Remove(getUserVote);
-
+                    var voteObj = new ForumVotes();
+                    voteObj.ForumId = ForumId;
+                    voteObj.UserId = loginuserid;
+                    voteObj.UpVote = true;
+                    _context.ForumVotes.Add(voteObj);
+                    statusflag = 1;
                 }
                 else
                 {
-                    getUserVote.UpVote = true;
-                    getUserVote.DownVote = false;
+                    if (getUserVote.UpVote)
+                    {
+                        _context.ForumVotes.Remove(getUserVote);
+                        statusflag = 2;
+                    }
+                    else
+                    {
+                        getUserVote.UpVote = true;
+                        getUserVote.DownVote = false;
+                        statusflag = 3;
+                    }
                 }
+                _context.SaveChanges();
+                UpdateForumVotes(ForumId);
             }
-            _context.SaveChanges();
-            return Json("done");
+            else
+            {
+                statusflag = 4;
+            }
+            
+            return Json(statusflag);
 
 
         }
 
         public ActionResult ForumDownVote(int ForumId)
         {
-            var getUserVote = _context.ForumVotes.Where(c => c.ForumId == ForumId).Where(c => c.UserId == loginuserid).SingleOrDefault();
+            //1-add
+            //2-delete
+            //3-update
+            //4-none
+            int statusflag;
+            var getThread = _context.Forum.SingleOrDefault(c => c.Id == ForumId);
+            if (getThread.UserId != loginuserid)
+            {
+                var getUserVote = _context.ForumVotes.Where(c => c.ForumId == ForumId).Where(c => c.UserId == loginuserid).SingleOrDefault();
 
-            if (getUserVote == null)
-            {
-                var voteObj = new ForumVotes();
-                voteObj.ForumId = ForumId;
-                voteObj.UserId = loginuserid;
-                voteObj.DownVote = true;
-                _context.ForumVotes.Add(voteObj);
-            }
-            else
-            {
-                if (getUserVote.DownVote)
+                if (getUserVote == null)
                 {
-                    _context.ForumVotes.Remove(getUserVote);
-
+                    var voteObj = new ForumVotes();
+                    voteObj.ForumId = ForumId;
+                    voteObj.UserId = loginuserid;
+                    voteObj.DownVote = true;
+                    _context.ForumVotes.Add(voteObj);
+                    statusflag = 1;
                 }
                 else
                 {
-                    getUserVote.DownVote = true;
-                    getUserVote.UpVote = false;
+                    if (getUserVote.DownVote)
+                    {
+                        _context.ForumVotes.Remove(getUserVote);
+                        statusflag = 2;
+                    }
+                    else
+                    {
+                        getUserVote.DownVote = true;
+                        getUserVote.UpVote = false;
+                        statusflag = 3;
+                    }
                 }
+                _context.SaveChanges();
+                UpdateForumVotes(ForumId);
             }
-            _context.SaveChanges();
-            return Json("done");
+            else
+            {
+                statusflag = 4;
+            }
+
+            return Json(statusflag);
         }
 
 
@@ -247,6 +293,7 @@ namespace QnA.Controllers
 
             var ViewModels = new QuestionViewModel
             {
+                Id = 3,
                 forum = getQuestion,
                 threadList = getThreads
             };
@@ -255,63 +302,107 @@ namespace QnA.Controllers
         }
 
 
+        public void UpdateThreadVotes(int ThreadId)
+        {
+            var UpVotes = _context.ThreadVotes.Where(c => c.UpVote == true).Where(c => c.ThreadId == ThreadId).ToList();
+            var DownVotes = _context.ThreadVotes.Where(c => c.DownVote == true).Where(c => c.ThreadId == ThreadId).ToList();
+
+            var getThread = _context.Thread.Single(c => c.Id == ThreadId);
+            getThread.Upvote = UpVotes.Count;
+            getThread.Downvote = DownVotes.Count;
+            _context.SaveChanges();
+
+        }
 
         public ActionResult ThreadUpVote(int ThreadId)
         {
-            var getUserVote = _context.ThreadVotes.Where(c => c.ThreadId == ThreadId).Where(c => c.UserId == loginuserid).SingleOrDefault();
+            //1-add
+            //2-delete
+            //3-update
+            //4-none
+            int statusflag;
+            var getThread = _context.Thread.SingleOrDefault(c => c.Id == ThreadId);
+            if(getThread.UserId != loginuserid)
+            {
+                var getUserVote = _context.ThreadVotes.Where(c => c.ThreadId == ThreadId).Where(c => c.UserId == loginuserid).SingleOrDefault();
 
-            if (getUserVote == null)
-            {
-                var voteObj = new ThreadVotes();
-                voteObj.ThreadId = ThreadId;
-                voteObj.UserId = loginuserid;
-                voteObj.UpVote = true;
-                _context.ThreadVotes.Add(voteObj);
-            }
-            else
-            {
-                if (getUserVote.UpVote)
+                if (getUserVote == null)
                 {
-                    _context.ThreadVotes.Remove(getUserVote);
-
+                    var voteObj = new ThreadVotes();
+                    voteObj.ThreadId = ThreadId;
+                    voteObj.UserId = loginuserid;
+                    voteObj.UpVote = true;
+                    _context.ThreadVotes.Add(voteObj);
+                    statusflag = 1;
                 }
                 else
                 {
-                    getUserVote.UpVote = true;
-                    getUserVote.DownVote = false;
+                    if (getUserVote.UpVote)
+                    {
+                        _context.ThreadVotes.Remove(getUserVote);
+                        statusflag = 2;
+                    }
+                    else
+                    {
+                        getUserVote.UpVote = true;
+                        getUserVote.DownVote = false;
+                        statusflag = 3;
+                    }
                 }
+                _context.SaveChanges();
+                UpdateThreadVotes(ThreadId);
             }
-            _context.SaveChanges();
-            return Json("done");
+            else
+            {
+                statusflag = 4;
+            }
+             return Json(statusflag);
         }
 
         public ActionResult ThreadDownVote(int ThreadId)
         {
-            var getUserVote = _context.ThreadVotes.Where(c => c.ThreadId == ThreadId).Where(c => c.UserId == loginuserid).SingleOrDefault();
+            //1-add
+            //2-delete
+            //3-update
+            //4-none
+            int statusflag;
+            var getThread = _context.Thread.SingleOrDefault(c => c.Id == ThreadId);
+            if (getThread.UserId != loginuserid)
+            {
+                var getUserVote = _context.ThreadVotes.Where(c => c.ThreadId == ThreadId).Where(c => c.UserId == loginuserid).SingleOrDefault();
 
-            if (getUserVote == null)
-            {
-                var voteObj = new ThreadVotes();
-                voteObj.ThreadId = ThreadId;
-                voteObj.UserId = loginuserid;
-                voteObj.DownVote = true;
-                _context.ThreadVotes.Add(voteObj);
-            }
-            else
-            {
-                if (getUserVote.DownVote)
+                if (getUserVote == null)
                 {
-                    _context.ThreadVotes.Remove(getUserVote);
-
+                    var voteObj = new ThreadVotes();
+                    voteObj.ThreadId = ThreadId;
+                    voteObj.UserId = loginuserid;
+                    voteObj.DownVote = true;
+                    _context.ThreadVotes.Add(voteObj);
+                    statusflag = 1;
                 }
                 else
                 {
-                    getUserVote.DownVote = true;
-                    getUserVote.UpVote = false;
+                    if (getUserVote.DownVote)
+                    {
+                        _context.ThreadVotes.Remove(getUserVote);
+                        statusflag = 2;
+                    }
+                    else
+                    {
+                        getUserVote.DownVote = true;
+                        getUserVote.UpVote = false;
+                        statusflag = 3;
+                    }
                 }
+                _context.SaveChanges();
+                UpdateThreadVotes(ThreadId);
             }
-            _context.SaveChanges();
-            return Json("done");
+            else
+            {
+                statusflag = 4;
+            }
+
+            return Json(statusflag);
         }
 
         public ActionResult AddThread(Thread thread)

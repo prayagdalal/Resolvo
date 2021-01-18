@@ -17,7 +17,7 @@
         }
         img.avatar{
             padding:0;
-      
+
             width:45px;
             height:45px;
         }
@@ -35,6 +35,24 @@
         }
         .best-answer-meta{
             cursor:pointer;
+        }
+        .fupvote, .tupvote, .fdownvote, .tdownvote {
+            margin-bottom: 0px;
+            margin-right: 0px;
+            background-color: transparent;
+            border: 0;
+            padding: 0;
+        }
+        .fupvote i, .tupvote i, .fdownvote i, .tdownvote i {
+             font-size: 2rem;
+        }
+        .footer-meta li {
+            padding:0;
+            padding-left: 5px;
+            padding-right: 5px;
+        }
+        .commentbox{
+            display:none;
         }
     </style>
 </head>
@@ -85,10 +103,14 @@
                                         <div class="question-not-mobile question-image-vote question-vote-sticky">
                                             <div class="">
                                                 <ul class="question-vote">
-                                                    <li class="question-vote-up"><a href="#" id="question_vote_up-118" data-type="question" data-vote-type="up" class="wpqa_vote question_vote_up vote_allow" title="Like"><i class="icon-up-dir"></i></a></li>
-                                                    <li class="vote_result" itemprop="upvoteCount">126</li>
+                                                    <li class="question-vote-up"><button id="@("fupvote"+Model.forum.Id)" updateid="@("fupvote-"+Model.forum.Id)" class="fupvote" title="upvote"><i class="icon-up-dir"></i></button></li>
+                                                    @{
+                                                        var forumVotes = Model.forum.Upvote - Model.forum.Downvote;
+
+                                                    }
+                                                    <li class="vote_result" itemprop="upvoteCount">@forumVotes</li>
                                                     <li class="li_loader"><span class="loader_3 fa-spin"></span></li>
-                                                    <li class="question-vote-down"><a href="#" id="question_vote_down-118" data-type="question" data-vote-type="down" class="wpqa_vote question_vote_down vote_allow wpqa_voted_already" title="Dislike"><i class="icon-down-dir"></i></a></li>
+                                                    <li class="question-vote-down"><button id="@("fdownvote"+Model.forum.Id)" updateid="@("fdownvote-"+Model.forum.Id)"  class="fdownvote" title="downvote"><i class="icon-down-dir"></i></button></li>
                                                 </ul>
                                             </div>
                                         </div>
@@ -99,7 +121,7 @@
                                                 <div class="question-content-text">
                                                     <div class="all_signle_post_content">
                                                         <div class="content-text" itemprop="text">
-                                                           @Model.forum.Body
+                                                            @Model.forum.Body
                                                         </div>
                                                         <div class="clearfix"></div>
                                                         <div></div>
@@ -107,21 +129,27 @@
                                                 </div>
                                                 <div class="tagcloud">
                                                     <div class="question-tags">
-                                                        @foreach(var data in Model.forum.tags)
+                                                        @foreach (var data in Model.forum.tags)
                                                         {
-                                                            <a href="">@data.Tag.Name</a>
+                                                            <a href="" style="background: #e1ecf4;color:#39739d">@data.Tag.Name</a>
                                                         }
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="question-footer">
-                                                <ul class="footer-meta">
-                                                    <li class="best-answer-meta"><span class="question-span">Edit</span></li>
-                                                    <li class="best-answer-meta"><span class="question-span">Delete</span></li>
-                                                    <li class="best-answer-meta"><span class="question-span">Share</span></li>
-                                                </ul>
-                                                <a class="meta-answer meta-answer-a" href="">Answer</a>
-                                            </div>
+                                            @{
+                                                if (Model.Id == Model.forum.UserId)
+                                                {
+                                                    <div class="question-footer">
+                                                        <ul class="footer-meta">
+                                                            <li class="best-answer-meta"><span class="editforum question-span" updateid="@Model.forum.Id">Edit</span></li>
+                                                            <li class="best-answer-meta"><span class="deleteforum question-span" updateid="@Model.forum.Id">Delete</span></li>
+                                                        </ul>
+                                                        <a class="meta-answer meta-answer-a" href="">Answer</a>
+                                                    </div>
+                                                }
+
+                                            }
+
                                         </div>
                                         <div class="clearfix"></div>
                                     </div>
@@ -160,6 +188,7 @@
                                                                         </div>
                                                                         <ul class="question-vote question-mobile">
                                                                             <li class="question-vote-up"><a href="#" id="question_vote_up-118" data-type="question" data-vote-type="up" class="wpqa_vote question_vote_up vote_allow" title="Like"><i class="icon-up-dir"></i></a></li>
+                                                                          
                                                                             <li class="vote_result" itemprop="upvoteCount">126</li>
                                                                             <li class="li_loader"><span class="loader_3 fa-spin"></span></li>
                                                                             <li class="question-vote-down"><a href="#" id="question_vote_down-118" data-type="question" data-vote-type="down" class="wpqa_vote question_vote_down vote_allow wpqa_voted_already" title="Dislike"><i class="icon-down-dir"></i></a></li>
@@ -179,10 +208,14 @@
                                                                     <div class="question-not-mobile question-image-vote question-vote-sticky">
                                                                         <div class="">
                                                                             <ul class="question-vote">
-                                                                                <li class="question-vote-up"><a href="#" id="question_vote_up-118" data-type="question" data-vote-type="up" class="wpqa_vote question_vote_up vote_allow" title="Like"><i class="icon-up-dir"></i></a></li>
-                                                                                <li class="vote_result" itemprop="upvoteCount">126</li>
+                                                                            <li class="question-vote-up"><button  id="@("tupvote"+data.Id)" updateid="@("tupvote-"+data.Id)" class="tupvote" title="Like"><i class="icon-up-dir"></i></button></li>
+                                                                                @{
+                                                                                    var threadVotes = data.Upvote - data.Downvote;
+
+                                                                                }
+                                                                            <li class="vote_result" itemprop="upvoteCount">@threadVotes</li>
                                                                                 <li class="li_loader"><span class="loader_3 fa-spin"></span></li>
-                                                                                <li class="question-vote-down"><a href="#" id="question_vote_down-118" data-type="question" data-vote-type="down" class="wpqa_vote question_vote_down vote_allow wpqa_voted_already" title="Dislike"><i class="icon-down-dir"></i></a></li>
+                                                                                <li class="question-vote-down"><button id="@("tdownvote"+data.Id)" updateid="@("tdownvote-"+data.Id)" class="tdownvote" title="Dislike"><i class="icon-down-dir"></i></button></li>
                                                                             </ul>
                                                                         </div>
                                                                     </div>
@@ -193,32 +226,48 @@
                                                                             <div class="question-content-text">
                                                                                 <div class="text">
                                                                                     <div itemprop="text" style="color:black">
-                                                                                    @data.Body    
+                                                                                        @Html.Raw(WebUtility.HtmlDecode(data.Body))
                                                                                     </div>
-                                                                                    <ul class="footer-meta">
-                                                                                        <li class="best-answer-meta"><span class="question-span">Edit</span></li>
-                                                                                        <li class="best-answer-meta"><span class="question-span">Delete</span></li>
-                                                                                        <li class="best-answer-meta"><span class="question-span">Share</span></li>
-                                                                                    </ul>
+                                                                                    @{
+                                                                                        if (Model.Id == data.UserId)
+                                                                                        {
+                                                                                            <ul class="footer-meta">
+
+                                                                                                <li class="best-answer-meta"><span class="editthread question-span" updateid="@data.Id">Edit</span></li>
+                                                                                                <li class="best-answer-meta"><span class="deletethread question-span" updateid="@data.Id">Delete</span></li>
+                                                                                            </ul>
+                                                                                        }
+                                                                                    }
+
                                                                                     <div class="clearfix"></div>
                                                                                     <div class="clearfix"></div>
                                                                                     <div class="wpqa_error"></div>
                                                                                     @*       <ul class="comment-reply comment-reply-main">
-                                            <li><sapn style="font-size:0.8rem;font-weight:bold"><a href="" data-id="63" data-post_id="118"> 5 comments</a></sapn></li>
-                                            <li class="clearfix last-item-answers"></li>
-                                        </ul>*@
+            <li><sapn style="font-size:0.8rem;font-weight:bold"><a href="" data-id="63" data-post_id="118"> 5 comments</a></sapn></li>
+            <li class="clearfix last-item-answers"></li>
+        </ul>*@
 
-                                                                                <div class="question-footer" style="margin-top:0.5rem">
-                                                                                    @foreach (var cmt in data.CommentList)
-                                                                                    {
-                                                                                        <div>@cmt.Body - <a href="">@cmt.User.Name</a></div><hr>
-                                                                                    }
-                                                                                   
-                                                                                    <sapn style="font-size:0.8rem;"><a href="" data-id="63" data-post_id="118"> add a comment</a></sapn><br />
-                                                                                    <textarea class="form-control"></textarea>
-                                                                                    <a class="meta-answer meta-answer-a" style=" padding: 5px; letter-spacing: 0;" href="">Add Comment</a>
-                                                                                    <a style="float:right; padding: 5px; " href="">cancel</a>
-                                                                                </div>
+                                                                                    <div class="question-footer" id="@("commentlist"+data.Id)" style="margin-top:0.5rem">
+                                                                                        @foreach (var cmt in data.CommentList)
+                                                                                        {
+                                                                                        <div id="@("commentrow" + cmt.Id)">
+                                                                                            @cmt.Body -<a href="">@cmt.User.Name</a>
+                                                                                            @{
+                                                                                                if (Model.Id == cmt.UserId)
+                                                                                                {
+                                                                                                    <a href="javascript:void(0)" class="deletecomment" updateid="@cmt.Id">Delete</a>
+                                                                                                }
+                                                                                             }
+                                                                                                </div><hr>
+                                                                                        }
+
+                                                                                        <sapn style="font-size:0.8rem;"><a href="javascript:void(0)" class="opencommentbox" updateid="@data.Id"> add a comment</a></sapn><br />
+                                                                                        <div id="@("commentbox"+data.Id)" class="commentbox">
+                                                                                        <textarea class="form-control" id="@("commentinput"+data.Id)"></textarea>
+                                                                                        <a class="addcomment meta-answer meta-answer-a" updateid="@data.Id" style=" padding: 5px; letter-spacing: 0;" href="javascript:void(0)">Add Comment</a>
+                                                                                        <a class="cancelcomment meta-answer meta-answer-a" updateid="@data.Id" style="float:right; padding: 5px; margin-right:5px" href="javascript:void(0)">cancel</a>
+                                                                                        </div>
+                                                                                    </div>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -242,7 +291,7 @@
                                             <h3 class="section-title comment-form-hide" style="display: block;">
                                                 Leave an answer
                                             </h3>
-                                            <form action="" method="post" id="commentform" class="post-section comment-form comment-form-hide answers-form" novalidate="" enctype="multipart/form-data" style="display: block;">
+                                            
                                                 <div class="clearfix"></div>
                                                 <div class="wpqa_error"></div>
                                                 <div class="form-input form-textarea form-comment-editor">
@@ -251,10 +300,9 @@
                                                     </div>
                                                 </div>
                                                 <p class="form-submit">
-                                                    <input name="submit" type="submit" id="submit" class="button-default button-hide-click" value="Post Your Answer">
+                                                    <button id="postanswer" class="button-default button-hide-click" style="width:100%">Post Your Answer</button>
                                                 </p>
                                                 <input type="hidden" id="ak_js" name="ak_js" value="1609535191671">
-                                            </form>
                                         </div>
                                     </div>
                                 </div>
@@ -294,4 +342,299 @@
         modules: { toolbar: toolbarOptions },
         theme: 'snow'
     })
+
+    //forum upvote
+    $(".fupvote").click(function () {
+        var idString = $(this).attr("updateid");
+        var forumid = parseInt(idString.split("-")[1]);
+        ForumUpVote(forumid)
+        //alert(forumid)
+    })
+    //forum downvote
+    $(".fdownvote").click(function () {
+        var idString = $(this).attr("updateid");
+        var forumid = parseInt(idString.split("-")[1]);
+        ForumDownVote(forumid)
+        //alert(forumid)
+    })
+    //thread upvote
+    $(".tupvote").click(function () {
+        var idString = $(this).attr("updateid");
+        var threadid = parseInt(idString.split("-")[1]);
+        ThreadUpVote(threadid)
+        //alert(threadid)
+    })
+    //thread downvote
+    $(".tdownvote").click(function () {
+        var idString = $(this).attr("updateid");
+        var threadid = parseInt(idString.split("-")[1]);
+        ThreadDownVote(threadid)
+        //alert(threadid)
+    })
+
+    //add thread
+    $("#postanswer").click(() => {
+        var body = $(".ql-editor").html()
+        if (body.length >= 100) {
+            alert("in")
+             AddThread();
+        }
+        else {
+            //validation err
+        }
+    });
+    //edit forum
+    $(".editforum").click(function () {
+        var forumid = $(this).attr("updateid");
+        alert(forumid)
+    })
+    //delete forum
+    $(".deleteforum").click(function () {
+        var forumid = $(this).attr("updateid");
+        var confirm = window.confirm("Really delete this Question?");
+        if (confirm == true) {
+            alert(forumid)
+        }
+    })
+    //edit thread
+    $(".editthread").click(function () {
+        var threadid = $(this).attr("updateid");
+        alert(threadid)
+    })
+    //delete thread
+    $(".deletethread").click(function () {
+        var threadid = $(this).attr("updateid");
+        var confirm = window.confirm("Really delete this post?");
+        if (confirm == true) {
+            alert(threadid)
+        }
+       
+    })
+
+    //open comment div
+    $(".opencommentbox").click(function () {
+        var threadid = parseInt($(this).attr("updateid"));
+        $("#commentbox" + threadid).css('display', 'block')
+        //alert(threadid)
+    })
+    //add comment
+    $(".addcomment").click(function () {
+        var threadid = $(this).attr("updateid");
+        alert(threadid)
+    })
+    //hide comment div
+    $(".cancelcomment").click(function () {
+        var threadid = parseInt($(this).attr("updateid"));
+        $("#commentbox" + threadid).css('display', 'none')
+       // alert(threadid)
+    })
+    //delete comment
+    $(document).on('click', '.deletecomment', function () {
+        var threadid = $(this).attr("updateid");
+        var confirm = window.confirm("Really delete this comment?");
+        if (confirm == true) {
+            alert(threadid)
+        }
+    });
+
+    
+    
+
+
+
+
+    function AddThread() {
+        alert("in2")
+        var obj = {
+            thread: {
+                ParentThreadId:0,
+                Body: $(".ql-editor").html(),
+                ForumId:@Model.forum.Id,
+                UserId:@Model.Id
+            }
+        }
+
+        $.ajax({
+            url: "/Question/AddThread",
+            method: "POST",
+            data: JSON.stringify(obj),
+            contentType: "application/json",
+            cache: false,
+            success: function (res) {
+                console.log(res);
+            },
+            error: function (err) {
+                console.log(err);
+            }
+        });
+    }
+
+    function EditThread() {
+        var obj = {
+
+        }
+
+        $.ajax({
+            url: "/Question/EditThread",
+            method: "POST",
+            data: JSON.stringify(obj),
+            contentType: "application/json",
+            cache: false,
+            success: function (res) {
+                console.log(res);
+            },
+            error: function (err) {
+
+            }
+        });
+    }
+
+    function DeleteThread() {
+        var obj = {
+
+        }
+
+        $.ajax({
+            url: "/Question/DeleteThread",
+            method: "POST",
+            data: JSON.stringify(obj),
+            contentType: "application/json",
+            cache: false,
+            success: function (res) {
+                console.log(res);
+            },
+            error: function (err) {
+
+            }
+        });
+    }
+
+    function AddComment() {
+        var obj = {
+
+        }
+
+        $.ajax({
+            url: "/Question/AddComment",
+            method: "POST",
+            data: JSON.stringify(obj),
+            contentType: "application/json",
+            cache: false,
+            success: function (res) {
+                console.log(res);
+            },
+            error: function (err) {
+
+            }
+        });
+    }
+
+    function DeleteComment() {
+        var obj = {
+
+        }
+
+        $.ajax({
+            url: "/Question/DeleteComment",
+            method: "POST",
+            data: JSON.stringify(obj),
+            contentType: "application/json",
+            cache: false,
+            success: function (res) {
+                console.log(res);
+            },
+            error: function (err) {
+
+            }
+        });
+    }
+
+
+    function ThreadUpVote(threadid) {
+        var obj = {
+            ThreadId: threadid
+        }
+
+        $.ajax({
+            url: "/Question/ThreadUpVote",
+            method: "POST",
+            data: JSON.stringify(obj),
+            contentType: "application/json",
+            cache: false,
+            success: function (res) {
+                console.log(res);
+            },
+            error: function (err) {
+
+            }
+        });
+    }
+
+    function ThreadDownVote(threadid) {
+        var obj = {
+            ThreadId: threadid
+        }
+
+        $.ajax({
+            url: "/Question/ThreadDownVote",
+            method: "POST",
+            data: JSON.stringify(obj),
+            contentType: "application/json",
+            cache: false,
+            success: function (res) {
+                console.log(res);
+            },
+            error: function (err) {
+
+            }
+        });
+    }
+
+    function ForumUpVote(forumid) {
+        var obj = {
+            ForumId: forumid
+        }
+
+        $.ajax({
+            url: "/Question/ForumUpVote",
+            method: "POST",
+            data: JSON.stringify(obj),
+            contentType: "application/json",
+            cache: false,
+            success: function (res) {
+                console.log(res);
+            //1-add
+            //2-delete
+            //3-update
+            //4-none
+            },
+            error: function (err) {
+
+            }
+        });
+    }
+
+    function ForumDownVote(forumid) {
+        var obj = {
+            ForumId: forumid
+        }
+
+        $.ajax({
+            url: "/Question/ForumDownVote",
+            method: "POST",
+            data: JSON.stringify(obj),
+            contentType: "application/json",
+            cache: false,
+            success: function (res) {
+                console.log(res);
+            },
+            error: function (err) {
+
+            }
+        });
+    }
+
+
+
+
 </script>
