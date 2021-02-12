@@ -19,9 +19,18 @@ namespace QnA.Models
         public DbSet<Points> Points { get; set; }
         public DbSet<ForumVotes> ForumVotes { get; set; }
         public DbSet<ThreadVotes> ThreadVotes { get; set; }
+        public DbSet<NotificationEvents> NotificationEvents { get; set; }
+        public DbSet<Notifications> Notifications { get; set; }
+        public DbSet<NotificationEventParams> NotificationEventParams { get; set; }
+        public DbSet<NotificationParams> NotificationParams { get; set; }
         public QnAContext()
         {
 
+        }
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            Database.SetInitializer<QnAContext>(null);
+            base.OnModelCreating(modelBuilder);
         }
     }
 }

@@ -40,7 +40,7 @@
 
                                             <div class="q-ltop-content">
                                                 <h2 itemprop="name">
-                                                    <a itemprop="url" href="" class="question-title">
+                                                    <a itemprop="url" href="/Question/Thread?Id=@question.Id" class="question-title">
                                                         @question.Title
                                                     </a>
                                                 </h2>
@@ -81,8 +81,12 @@
                                                     answers
                                                 </li>
                                                 <li>
+                                                    @{
+                                                        var threadVotes = question.Upvote - question.Downvote;
+
+                                                    }
                                                     <span itemprop="upvoteCount" class="question-votes">
-                                                        0
+                                                        @threadVotes
                                                     </span>
                                                     votes
                                                 </li>

@@ -83,8 +83,12 @@
                                                     answers
                                                 </li>
                                                 <li>
+                                                    @{
+                                                        var threadVotes = question.Upvote - question.Downvote;
+
+                                                    }
                                                     <span itemprop="upvoteCount" class="question-votes">
-                                                        0
+                                                        @threadVotes
                                                     </span>
                                                     votes
                                                 </li>

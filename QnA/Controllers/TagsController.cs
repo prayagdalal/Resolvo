@@ -19,6 +19,7 @@ namespace QnA.Controllers
 
         public TagsController()
         {
+            var ss = "ss";
             _context = new QnAContext();
         }
 
@@ -43,6 +44,7 @@ namespace QnA.Controllers
         }
 
         //for admin
+        [Authorize(Roles = "Admin")]
         public ActionResult All()
         {
             var Tags = _context.Tag.ToList();
@@ -60,6 +62,7 @@ namespace QnA.Controllers
             return View("Admin/Index", viewModel);
         }
 
+        [Authorize(Roles = "Admin")]
         public ActionResult Add()
         {
             var viewModel = new TagViewModel
@@ -70,6 +73,7 @@ namespace QnA.Controllers
             return View("Admin/Add", viewModel);
         }
 
+        [Authorize(Roles = "Admin")]
         public ActionResult Save(Tag tag)
         {
             if (tag.Id == 0)
@@ -105,6 +109,7 @@ namespace QnA.Controllers
             return RedirectToAction("All", "Tags");
         }
 
+        [Authorize(Roles = "Admin")]
         public ActionResult Edit(int id)
         {
             var tag = _context.Tag.SingleOrDefault(c => c.Id == id);
@@ -124,6 +129,7 @@ namespace QnA.Controllers
 
         }
 
+        [Authorize(Roles = "Admin")]
         public ActionResult Delete(int id)
         {
             var tag = _context.Tag.SingleOrDefault(c => c.Id == id);

@@ -92,7 +92,7 @@
                                                     <div class="post-meta">
                                                         <span class="post-date" style="margin-top: 3px;">
                                                             Asked:<span class="date-separator"></span>
-                                                            <time class="entry-date published">April 19, 2018</time></span>
+                                                                  <time class="entry-date published">@Model.forum.DateTime.ToString("MMM/dd/yyyy hh:mm  tt")</time></span>
                                                     </div>
                                                 </div>
                                             </header>
@@ -154,7 +154,7 @@
                                                     <div class="question-tags">
                                                         @foreach (var data in Model.forum.tags)
                                                         {
-                                                            <a href="" style="background: #e1ecf4;color:#39739d">@data.Tag.Name</a>
+                                                            <a href="/Question/Tag?tagId=@data.Tag.Id" style="background: #e1ecf4;color:#39739d">@data.Tag.Name</a>
                                                         }
                                                     </div>
                                                 </div>
@@ -198,7 +198,7 @@
                                                 <ol class="commentlist clearfix">
                                                     @foreach (var data in Model.threadList)
                                                     {
-                                                        <li class="comment byuser comment-author-marko even thread-even depth-1" itemscope="" id="li-comment-64">
+                                                        <li class="comment byuser comment-author-marko even thread-even depth-1" itemscope="" id="@("li-thread-"+data.Id)">
                                                             <div class="single-inner-content">
                                                                 <div class="question-inner">
                                                                     <div class="question-image-vote">
@@ -225,7 +225,7 @@
 
                                                                         </div>
                                                                         <span href="" class="comment-date" itemprop="url">
-                                                                            Added an answer on April 19, 2018
+                                                                            Added an answer on @data.DateTime.ToString("MMM/dd/yyyy hh:mm  tt")
                                                                         </span>
                                                                     </header>
                                                                     <div class="question-not-mobile question-image-vote question-vote-sticky">
@@ -311,7 +311,7 @@
                                                                                     <sapn style="font-size:0.8rem;"><a href="javascript:void(0)" class="opencommentbox" updateid="@data.Id"> add a comment</a></sapn><br />
                                                                                     <div id="@("commentbox"+data.Id)" class="commentbox">
                                                                                         <textarea class="form-control" id="@("commentinput"+data.Id)"></textarea>
-                                                                                        <a class="addcomment meta-answer meta-answer-a" updateid="@data.Id" style=" padding: 5px; letter-spacing: 0;" href="javascript:void(0)">Add Comment</a>
+                                                                                        <a class="addcomment meta-answer meta-answer-a" updateid="@data.Id" userid="@data.User.Id" style=" padding: 5px; letter-spacing: 0;" href="javascript:void(0)">Add Comment</a>
                                                                                         <a class="cancelcomment meta-answer meta-answer-a" updateid="@data.Id" style="float:right; padding: 5px; margin-right:5px" href="javascript:void(0)">cancel</a>
                                                                                     </div>
                                                                                 </div>
@@ -470,7 +470,8 @@
     //add comment
     $(".addcomment").click(function () {
         var threadid = parseInt($(this).attr("updateid"));
-        AddComment(threadid);
+        var AnsewerUserId = parseInt($(this).attr("userid"));
+        AddComment(threadid,AnsewerUserId);
         //alert(threadid)
     })
     //hide comment div
@@ -504,7 +505,8 @@
                 Body: $(".ql-editor").html(),
                 ForumId:@Model.forum.Id,
                 UserId:@Model.Id
-            }
+            },
+            QuestionUserId:@Model.forum.UserId
         }
 
         $.ajax({
@@ -515,6 +517,7 @@
             cache: false,
             success: function (res) {
                 console.log(res);
+                window.location.href='@Url.Action("Thread", "Question",new { id = Model.forum.Id })'
             },
             error: function (err) {
                 console.log(err);
@@ -537,7 +540,7 @@
             cache: false,
             success: function (res) {
                 console.log(res);
-                window.location.href='@Url.Action("Thread", "Question",new { id = 1 })'
+                window.location.href='@Url.Action("Thread", "Question",new { id = Model.forum.Id })'
             },
             error: function (err) {
 
@@ -545,7 +548,7 @@
         });
     }
 
-    function AddComment(threadid) {
+    function AddComment(threadid,AnsewerUserId) {
 
         var obj = {
             thread: {
@@ -553,7 +556,9 @@
                 Body: $("#commentinput" + threadid).val(),
                 ForumId:@Model.forum.Id,
                 UserId:@Model.Id
-            }
+            },
+            QuestionUserId:@Model.forum.UserId,
+            AnswerUserId: AnsewerUserId
         }
 
         $.ajax({

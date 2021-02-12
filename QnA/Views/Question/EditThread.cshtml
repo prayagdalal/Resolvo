@@ -78,7 +78,7 @@
             cache: false,
             success: function (res) {
                 console.log(res);
-                window.location.href='@Url.Action("Thread","Question",new { id = 1 })'
+                window.location.href='@Url.Action("Thread","Question",new { id = Model.thread.ForumId })'
             },
             error: function (err) {
 

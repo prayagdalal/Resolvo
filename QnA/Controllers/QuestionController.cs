@@ -7,6 +7,7 @@ using QnA.ViewModels;
 using QnA.Models;
 using System.Data.Entity;
 using System.Web.Script.Serialization;
+using Newtonsoft.Json;
 
 /*using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
@@ -22,7 +23,7 @@ namespace QnA.Controllers
     public class QuestionController : Controller
     {
         // GET: Forum
-        int loginuserid = 3;
+        //int loginuserid;
 
         private QnAContext _context;
         public QuestionController()
@@ -35,11 +36,13 @@ namespace QnA.Controllers
         //----------------------------------------------------------forum----------------------------------------------------------------//
 
         //user interest
+        [Authorize(Roles = "User")]
         public ActionResult Index()
         {
             List<int> userTags = new List<int>();
             List<int> forumList = new List<int>();
 
+            var loginuserid = (int)Session["userid"];
             var getTags = _context.UserTags.Where(c => c.UserId == loginuserid).ToList();
 
             foreach (var data in getTags)
@@ -78,6 +81,7 @@ namespace QnA.Controllers
         }
 
         //all
+        [Authorize(Roles = "User")]
         public ActionResult All()
         {
             var getQuestions = _context.Forum.Include(c => c.User).ToList();
@@ -103,9 +107,10 @@ namespace QnA.Controllers
 
         }
 
-
+        [Authorize(Roles ="User")]
         public ActionResult Add()
         {
+            var loginuserid = (int)Session["userid"];
             var viewModel = new QuestionViewModel
             {
                 type = "Add",
@@ -115,7 +120,7 @@ namespace QnA.Controllers
             return View(viewModel);
         }
 
-
+        [Authorize(Roles = "User")]
         public ActionResult AddForum(int[] tags,Forum forum)
         {
             _context.Forum.Add(forum);
@@ -130,9 +135,10 @@ namespace QnA.Controllers
                 _context.ForumTags.Add(forumTags);
                 _context.SaveChanges();
             }
-            return Json("Done");
+            return Json(forumId);
         }
 
+        [Authorize(Roles = "User")]
         public ActionResult EditForum(int[] tags,Forum forum)
         {
             var getForum = _context.Forum.Single(c => c.Id == forum.Id);
@@ -159,6 +165,7 @@ namespace QnA.Controllers
 
         }
 
+        [Authorize(Roles = "User")]
         public ActionResult DeleteForum(int ForumID)
         {
             var getForum = _context.Forum.SingleOrDefault(c => c.Id == ForumID);
@@ -174,6 +181,7 @@ namespace QnA.Controllers
 
         }
 
+        [Authorize(Roles = "User")]
         public void UpdateForumVotes(int ForumId)
         {
             var UpVotes = _context.ForumVotes.Where(c => c.UpVote == true).Where(c => c.ForumId == ForumId).ToList();
@@ -186,8 +194,10 @@ namespace QnA.Controllers
 
         }
 
+        [Authorize(Roles = "User")]
         public ActionResult ForumUpVote(int ForumId)
         {
+            var loginuserid = (int)Session["userid"];
             //1-add
             //2-delete
             //3-update
@@ -243,8 +253,10 @@ namespace QnA.Controllers
 
         }
 
+        [Authorize(Roles = "User")]
         public ActionResult ForumDownVote(int ForumId)
         {
+            var loginuserid = (int)Session["userid"];
             //1-add
             //2-delete
             //3-update
@@ -306,10 +318,14 @@ namespace QnA.Controllers
 
 
 
+        
         [HttpGet]
+        [Authorize(Roles = "User")]
         public ActionResult Thread(int id=1)
         {
             //forum
+            var loginuserid = (int)Session["userid"];
+
             var getQuestion = _context.Forum.Include(c => c.User).Single(c => c.Id == id);
             var getQuestionTags = _context.ForumTags.Include(c => c.Tag).Include(c => c.Forum).Where(c => c.ForumId == id).ToList();
             getQuestion.tags = getQuestionTags;
@@ -329,7 +345,7 @@ namespace QnA.Controllers
 
             var ViewModels = new QuestionViewModel
             {
-                Id = 3,
+                Id = loginuserid,
                 forum = getQuestion,
                 threadList = getThreads
             };
@@ -337,7 +353,7 @@ namespace QnA.Controllers
             return View(ViewModels);     
         }
 
-
+        [Authorize(Roles = "User")]
         public void UpdateThreadVotes(int ThreadId)
         {
             var UpVotes = _context.ThreadVotes.Where(c => c.UpVote == true).Where(c => c.ThreadId == ThreadId).ToList();
@@ -350,8 +366,10 @@ namespace QnA.Controllers
 
         }
 
+        [Authorize(Roles = "User")]
         public ActionResult ThreadUpVote(int ThreadId)
         {
+            var loginuserid = (int)Session["userid"];
             //1-add
             //2-delete
             //3-update
@@ -405,8 +423,10 @@ namespace QnA.Controllers
             return Json(obj);
         }
 
+        [Authorize(Roles = "User")]
         public ActionResult ThreadDownVote(int ThreadId)
         {
+            var loginuserid = (int)Session["userid"];
             //1-add
             //2-delete
             //3-update
@@ -460,13 +480,35 @@ namespace QnA.Controllers
             return Json(obj);
         }
 
-        public ActionResult AddThread(Thread thread)
+        [Authorize(Roles = "User")]
+        public ActionResult AddThread(Thread thread,int QuestionUserId)
         {
             _context.Thread.Add(thread);
             _context.SaveChanges();
+
+            var notiObj = new Notifications();
+            notiObj.NotificationEventsId = 1;
+            notiObj.ByUserId = thread.UserId;
+            notiObj.ToUserId = QuestionUserId;
+            notiObj.Status = false;
+            _context.Notifications.Add(notiObj);
+            _context.SaveChanges();
+
+            var notiParaList = _context.NotificationEventParams.Where(c => c.NotificationEventsId == notiObj.NotificationEventsId).ToList();
+            foreach(var data in notiParaList)
+            {
+                var notiParaObj = new NotificationParams();
+                notiParaObj.NotificationsId = notiObj.Id;
+                notiParaObj.NotificationEventParamsId = data.NotificationEventsId;
+                notiParaObj.ParaValue =Convert.ToString(thread.ForumId);
+                _context.NotificationParams.Add(notiParaObj);
+                _context.SaveChanges();
+            }
+
             return Json("done");
         }
 
+        [Authorize(Roles = "User")]
         [HttpGet]
         public ActionResult EditThread(int threadid)
         {
@@ -479,6 +521,7 @@ namespace QnA.Controllers
             return View(viewModel);
         }
 
+        [Authorize(Roles = "User")]
         [HttpPost]
         public ActionResult EditThread(Thread thread)
         {
@@ -490,6 +533,7 @@ namespace QnA.Controllers
             return Json("done");
         }
 
+        [Authorize(Roles = "User")]
         public ActionResult DeleteThread(int ThreadId)
         {
             var getThread = _context.Thread.SingleOrDefault(c => c.Id == ThreadId);
@@ -504,7 +548,8 @@ namespace QnA.Controllers
             return Json("done");
         }
 
-        public ActionResult AddComment(Thread thread)
+        [Authorize(Roles = "User")]
+        public ActionResult AddComment(Thread thread, int QuestionUserId, int AnswerUserId)
         {
             var Thread = new Thread();
             Thread.ParentThreadId = thread.ParentThreadId;
@@ -514,10 +559,30 @@ namespace QnA.Controllers
             _context.Thread.Add(Thread);
             _context.SaveChanges();
 
+            var notiObj = new Notifications();
+            notiObj.NotificationEventsId = 2;
+            notiObj.ByUserId = thread.UserId;
+            notiObj.ToUserId = AnswerUserId;
+            notiObj.Status = false;
+            _context.Notifications.Add(notiObj);
+            _context.SaveChanges();
+
+            var notiParaList = _context.NotificationEventParams.Where(c => c.NotificationEventsId == notiObj.NotificationEventsId).ToList();
+            foreach (var data in notiParaList)
+            {
+                var notiParaObj = new NotificationParams();
+                notiParaObj.NotificationsId = notiObj.Id;
+                notiParaObj.NotificationEventParamsId = data.NotificationEventsId;
+                notiParaObj.ParaValue = Convert.ToString(thread.ForumId);
+                _context.NotificationParams.Add(notiParaObj);
+                _context.SaveChanges();
+            }
+
             var getThread = _context.Thread.Include(c => c.User).SingleOrDefault(c => c.Id == Thread.Id);
             return Json(getThread);
         }
 
+        [Authorize(Roles = "User")]
         public ActionResult DeleteComment(int ThreadId)
         {
             var getThread = _context.Thread.SingleOrDefault(c => c.Id == ThreadId);
@@ -545,7 +610,7 @@ namespace QnA.Controllers
                 thread = thread
             });
         }
-
+        [AllowAnonymous]
         public ActionResult Tag(int tagId)
         {
             List<int> forumList = new List<int>();
@@ -579,6 +644,22 @@ namespace QnA.Controllers
             };
 
             return View(viewModel);
+        }
+
+        public ActionResult getNoti()
+        {
+            var loginuserid = (int)Session["userid"];
+            var notis = _context.Notifications.Include(c => c.ToUser).Include(c => c.ByUser).Include(c => c.NotificationEvents).Where(c => c.ToUserId == loginuserid).ToList();
+            foreach(var data in notis)
+            {
+                var paras = _context.NotificationParams.Include(c => c.Notifications).Include(c=>c.NotificationEventParams).Where(c => c.NotificationsId == data.Id).ToList();
+                data.ParamsList = paras;
+            }
+
+            var viewModel = new NotificationViewModel { Notifications = notis };
+/*            var json = JsonConvert.SerializeObject(notis);
+*/            return Json(notis);
+
         }
 
 

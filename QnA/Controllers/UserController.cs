@@ -38,6 +38,7 @@ namespace QnA.Controllers
 
 
         //for admin
+        [Authorize(Roles = "Admin")]
         public ActionResult All()
         {
             var users = _context.User.ToList();
@@ -48,6 +49,7 @@ namespace QnA.Controllers
             return View("Admin/Index", viewModel);
         }
 
+        [Authorize(Roles = "Admin")]
         public ActionResult Add()
         {
             var viewModel = new UserViewModel
@@ -58,6 +60,7 @@ namespace QnA.Controllers
             return View("Admin/Add", viewModel);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public ActionResult Save(User user)
         {
@@ -77,6 +80,7 @@ namespace QnA.Controllers
             return RedirectToAction("All", "User");
         }
 
+        [Authorize(Roles = "Admin")]
         public ActionResult Edit(int id)
         {
             var user = _context.User.SingleOrDefault(c => c.Id == id);
@@ -96,6 +100,7 @@ namespace QnA.Controllers
 
         }
 
+        [Authorize(Roles = "Admin")]
         public ActionResult Delete(int id)
         {
             var user = _context.User.SingleOrDefault(c => c.Id == id);
@@ -132,6 +137,9 @@ namespace QnA.Controllers
             if (res != null)
             {
                 FormsAuthentication.SetAuthCookie(res.Email, false);
+                Session["userid"] = res.Id;
+                Session["name"] = res.Name;
+                Session["type"] = res.Type;
                 return Json(res);
             }
             else
@@ -161,8 +169,14 @@ namespace QnA.Controllers
                 User.Name = user.Name;
                 User.Email = user.Email;
                 User.Password = user.Password;
+                User.Type = "User";
+                User.Image = "user.png";
                 _context.User.Add(User);
                 _context.SaveChanges();
+                FormsAuthentication.SetAuthCookie(User.Email, false);
+                Session["userid"] = User.Id;
+                Session["name"] = User.Name;
+                Session["type"] = User.Type;
 
                 for (int i = 0; i < tags.Length; i++)
                 {
@@ -173,7 +187,7 @@ namespace QnA.Controllers
                     _context.SaveChanges();
 
                 }
-                return RedirectToAction("All", "User");
+                return Json("Done");
 
             }
 
@@ -181,11 +195,11 @@ namespace QnA.Controllers
         }
 
 
-        [HttpPost]
         public ActionResult Logout()
         {
 
             FormsAuthentication.SignOut();
+            Session.Abandon();
             return RedirectToAction("Login");
 
         }

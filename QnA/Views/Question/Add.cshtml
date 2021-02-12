@@ -206,12 +206,11 @@ function AddQuestion() {
 											contentType: "application/json",
 											cache: false,
 												success: function (res) {
-													if (res == "Done") {
-														alert("Question Inserted");
-                                                    }
-                                                    else
-														alert("Question Not Inserted");
-
+                                                    console.log(res);
+                                                    var id = res
+                                                    var link = '@Url.Action("Thread","Question",new { id = "JSVar" })'
+                                                    link = link.replace("JSVar", id);
+                                                    window.location.href = link;
 
 												},
 

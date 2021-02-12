@@ -166,7 +166,7 @@
                     <div class="field item form-group">
                         <h5><label class="col-form-label col-md-3 col-sm-3  label-align">Display Name<span class="required">*</span></label></h5>
                         <div class="col-md-6 col-sm-6">
-                            <input class="form-control" id="Name" type="text">
+                            <input class="form-control login-field" id="Name" type="text" required>
                         </div>
                     </div>
 
@@ -175,7 +175,7 @@
                         <div class="field item form-group">
                             <label class="col-form-label col-md-3 col-sm-3  label-align">User Mail<span class="required">*</span></label>
                             <div class="col-md-6 col-sm-6">
-                                <input class="form-control" id="Mail" type="text">
+                                <input class="form-control login-field" id="Mail" type="email" pattern=".{3,}">
                             </div>
                         </div>
 
@@ -183,7 +183,7 @@
                         <div class="field item form-group">
                             <label class="col-form-label col-md-3 col-sm-3  label-align">Tags<span class="required">*</span></label>
                             <div class="col-md-6 col-sm-6">
-                                <input class="form-control" data-role="tagsinput" id="tags" type="text">
+                                <input class="form-control login-field" data-role="tagsinput" id="Tags" type="text" required>
                             </div>
                         </div>
 
@@ -192,14 +192,14 @@
                         <div class="field item form-group">
                             <label class="col-form-label col-md-3 col-sm-3  label-align">Password<span class="required">*</span></label>
                             <div class="col-md-6 col-sm-6">
-                                <input class="form-control" id="Pass" type="text">
+                                <input class="form-control login-field" id="Pass" type="password" required>
                             </div>
                         </div>
                     </div>
                     <center>
                         <div class="container-login50-form-btn p-t-25">
                             <button type="submit" onclick="fnvalid()" class="login100-form-btn" style="width:20%;margin-right:1000%">
-                                Login
+                                SignUp
                             </button>
                         </div>
                     </center>
@@ -215,10 +215,15 @@
 </html>
 <script>
 		function fnvalid() {
-			event.preventDefault();
+            event.preventDefault();
+
+            if ($('#Name').val() == "" || $('#Mail').val() == "" || $('#Pass').val() == "") {
+                $('#dangerid').show().html("please Enter Details");
+                return;
+            }
 			var arr = new Array();
-			arr = $('#tags').val();
-			var data = $('#tags').val();
+			arr = $('#Tags').val();
+			var data = $('#Tags').val();
 			var arr = data.split(',');
 			var obj = {
 				tags: arr,
@@ -235,10 +240,10 @@
 											contentType: "application/json",
 											cache: false,
 												success: function (res) {
-													if (res == "Record Inseted") {
-														window.location.href = '@Url.Action("Index", "Home")';
+													if (res == "Done") {
+														window.location.href = '@Url.Action("Index", "Question")';
 													}
-													if (res == "Email Already Exist")
+													else
 														$('#dangerid').show().html(res);
 
 												},
@@ -256,7 +261,7 @@
 	});
 	cities.initialize();
 
-    var elt = $('#tags');
+	var elt = $('#Tags');
 	elt.tagsinput({
 		itemValue: 'Id',
 		itemText: 'Name',
@@ -267,7 +272,7 @@
 		}
 	});
 
-    $("#tags").val()
+	$("#Tags").val()
 </script>
 
 <!--===============================================================================================-->
